@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Crud\Repository;
+namespace Eloquent\Crud\Repository;
 
 interface CrudRepository
 {
@@ -39,7 +39,7 @@ interface CrudRepository
      *
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      *
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
     public function find($id, array $with = []);
 
@@ -51,7 +51,7 @@ interface CrudRepository
      *
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      *
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
     public function findWithTrashed($id, array $with = []);
 
@@ -63,7 +63,7 @@ interface CrudRepository
      *
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      *
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
     public function findTrashed($id, array $with = []);
 
@@ -78,7 +78,7 @@ interface CrudRepository
      *
      * @return \Illuminate\Database\Eloquent\Model|null|static
      *
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
     public function findBy($field, $value, $comparison = '=', $strict = true, array $with = []);
 
@@ -93,7 +93,7 @@ interface CrudRepository
      *
      * @return \Illuminate\Database\Eloquent\Model|null|static
      *
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
     public function findByWithTrashed($field, $value, $comparison = '=', $strict = true, array $with = []);
 
@@ -108,7 +108,7 @@ interface CrudRepository
      *
      * @return \Illuminate\Database\Eloquent\Model|null|static
      *
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
     public function findByTrashed($field, $value, $comparison = '=', $strict = true, array $with = []);
 
@@ -137,7 +137,7 @@ interface CrudRepository
      *
      * @return \Illuminate\Database\Eloquent\Model
      *
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
     public function create($params);
 
@@ -149,7 +149,7 @@ interface CrudRepository
      *
      * @return \Illuminate\Database\Eloquent\Model
      *
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
     public function update($id, $params);
 
@@ -160,7 +160,7 @@ interface CrudRepository
      *
      * @return bool
      *
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
      */
     public function delete($id);
@@ -172,7 +172,7 @@ interface CrudRepository
      *
      * @return bool
      *
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
      */
     public function forceDelete($id);
@@ -184,7 +184,7 @@ interface CrudRepository
      *
      * @return bool
      *
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
     public function restore($id);
 

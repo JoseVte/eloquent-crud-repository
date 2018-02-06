@@ -1,6 +1,6 @@
 <?php
 
-use Laravel\Crud\Repository\EloquentCrudRepository;
+use Eloquent\Crud\Repository\EloquentCrudRepository;
 
 class EloquentCrudTest extends \PHPUnit\Framework\TestCase
 {
@@ -15,12 +15,12 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     private $modelWithSoftDelete;
 
     /**
-     * @var \Laravel\Crud\Repository\EloquentCrudRepository
+     * @var \Eloquent\Crud\Repository\EloquentCrudRepository
      */
     private $repository;
 
     /**
-     * @var \Laravel\Crud\Repository\EloquentCrudRepository
+     * @var \Eloquent\Crud\Repository\EloquentCrudRepository
      */
     private $repositoryWithSoftDelete;
 
@@ -65,7 +65,7 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
     public function testFindModel()
     {
@@ -87,7 +87,7 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
     public function testFindWithTrashedModel()
     {
@@ -104,7 +104,7 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
     public function testFindOnlyTrashedModel()
     {
@@ -123,7 +123,7 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
     public function testFindByModel()
     {
@@ -145,7 +145,7 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
     public function testFindByWithTrashedModel()
     {
@@ -162,7 +162,7 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
     public function testFindByOnlyTrashedModel()
     {
@@ -213,7 +213,7 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
     public function testFormatModel()
     {
@@ -227,7 +227,7 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
     public function testCreate()
     {
@@ -241,7 +241,7 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
     public function testCreateWithParams()
     {
@@ -255,7 +255,7 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
     public function testUpdate()
     {
@@ -271,7 +271,7 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
     public function testUpdateNotFound()
     {
@@ -289,7 +289,7 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
      */
     public function testDelete()
@@ -302,7 +302,7 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
      */
     public function testDeleteNotFound()
@@ -321,7 +321,7 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
      */
     public function testForceDelete()
@@ -341,7 +341,7 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
      */
     public function testForceDeleteNotFound()
@@ -360,7 +360,7 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
      */
     public function testRestore()
@@ -372,7 +372,7 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @throws \Laravel\Crud\Exception\AccessDeniedException
+     * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
      */
     public function testRestoreNotFound()

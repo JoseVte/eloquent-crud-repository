@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Crud\Exception;
+namespace Eloquent\Crud\Exception;
 
 use Exception;
 

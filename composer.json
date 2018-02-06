@@ -2,6 +2,10 @@
     "name": "josrom/eloquent-crud-repository",
     "description": "All the basic methods to any Laravel project with Repository pattern",
     "minimum-stability": "stable",
+    "keywords": ["repository-pattern", "eloquent", "orm", "laravel"],
+    "license": "MIT",
+    "type": "library",
+    "version": "1.0.0",
     "authors": [
         {
             "name": "Jose Vicente Orts Romero",
@@ -10,7 +14,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Laravel\\Crud\\": "src/"
+            "Eloquent\\Crud\\": "src/"
         }
     },
     "autoload-dev": {
