@@ -314,7 +314,7 @@ class EloquentCrudRepository implements CrudRepository
      *
      * @param int $id The model's ID
      *
-     * @return bool
+     * @return bool|null
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
