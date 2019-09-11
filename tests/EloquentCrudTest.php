@@ -1,8 +1,11 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 use Eloquent\Crud\Repository\EloquentCrudRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\MassAssignmentException;
 
-class EloquentCrudTest extends \PHPUnit\Framework\TestCase
+class EloquentCrudTest extends TestCase
 {
     /**
      * @var \TestModel|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder
@@ -32,7 +35,7 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     /**
      * @throws \Exception
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -73,16 +76,16 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
 
         try {
             $this->repositoryWithSoftDelete->find(3);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $this->assertContains('No query results for model [TestModelWithSoftDelete]', $e->getMessage());
+        } catch (ModelNotFoundException $e) {
+            $this->assertStringContainsString('No query results for model [TestModelWithSoftDelete]', $e->getMessage());
         }
 
         $this->assertNotNull($this->repository->find(1));
 
         try {
             $this->repository->find(3);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $this->assertContains('No query results for model [TestModel]', $e->getMessage());
+        } catch (ModelNotFoundException $e) {
+            $this->assertStringContainsString('No query results for model [TestModel]', $e->getMessage());
         }
     }
 
@@ -98,8 +101,8 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
 
         try {
             $this->repository->findWithTrashed(3);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $this->assertContains('No query results for model [TestModel]', $e->getMessage());
+        } catch (ModelNotFoundException $e) {
+            $this->assertStringContainsString('No query results for model [TestModel]', $e->getMessage());
         }
     }
 
@@ -110,15 +113,15 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     {
         try {
             $this->repositoryWithSoftDelete->findTrashed(1);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $this->assertContains('No query results for model [TestModelWithSoftDelete]', $e->getMessage());
+        } catch (ModelNotFoundException $e) {
+            $this->assertStringContainsString('No query results for model [TestModelWithSoftDelete]', $e->getMessage());
         }
         $this->assertNotNull($this->repositoryWithSoftDelete->findTrashed(5));
 
         try {
             $this->assertNotNull($this->repository->findTrashed(1));
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $this->assertContains('No query results for model [TestModel]', $e->getMessage());
+        } catch (ModelNotFoundException $e) {
+            $this->assertStringContainsString('No query results for model [TestModel]', $e->getMessage());
         }
     }
 
@@ -131,16 +134,16 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
 
         try {
             $this->repositoryWithSoftDelete->findBy('id', 3);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $this->assertContains('No query results for model [TestModelWithSoftDelete]', $e->getMessage());
+        } catch (ModelNotFoundException $e) {
+            $this->assertStringContainsString('No query results for model [TestModelWithSoftDelete]', $e->getMessage());
         }
 
         $this->assertNotNull($this->repository->findBy('id', 1));
 
         try {
             $this->repository->findBy('id', 3);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $this->assertContains('No query results for model [TestModel]', $e->getMessage());
+        } catch (ModelNotFoundException $e) {
+            $this->assertStringContainsString('No query results for model [TestModel]', $e->getMessage());
         }
     }
 
@@ -156,8 +159,8 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
 
         try {
             $this->repository->findByWithTrashed('id', 3);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $this->assertContains('No query results for model [TestModel]', $e->getMessage());
+        } catch (ModelNotFoundException $e) {
+            $this->assertStringContainsString('No query results for model [TestModel]', $e->getMessage());
         }
     }
 
@@ -168,15 +171,15 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     {
         try {
             $this->repositoryWithSoftDelete->findByTrashed('id', 1);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $this->assertContains('No query results for model [TestModelWithSoftDelete]', $e->getMessage());
+        } catch (ModelNotFoundException $e) {
+            $this->assertStringContainsString('No query results for model [TestModelWithSoftDelete]', $e->getMessage());
         }
         $this->assertNotNull($this->repositoryWithSoftDelete->findByTrashed('id', 5));
 
         try {
             $this->repository->findByTrashed('id', 1);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $this->assertContains('No query results for model [TestModel]', $e->getMessage());
+        } catch (ModelNotFoundException $e) {
+            $this->assertStringContainsString('No query results for model [TestModel]', $e->getMessage());
         }
     }
 
@@ -197,7 +200,7 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
 
         try {
             $this->repositoryWithSoftDelete->newModel(['dontExist' => 'test']);
-        } catch (\Illuminate\Database\Eloquent\MassAssignmentException $e) {
+        } catch (MassAssignmentException $e) {
             $this->assertEquals('', $e->getMessage());
         }
 
@@ -207,7 +210,7 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
 
         try {
             $this->repository->newModel(['dontExist' => 'test']);
-        } catch (\Illuminate\Database\Eloquent\MassAssignmentException $e) {
+        } catch (MassAssignmentException $e) {
             $this->assertEquals('', $e->getMessage());
         }
     }
@@ -277,14 +280,14 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     {
         try {
             $this->repositoryWithSoftDelete->update(3, []);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $this->assertContains('No query results for model [TestModelWithSoftDelete]', $e->getMessage());
+        } catch (ModelNotFoundException $e) {
+            $this->assertStringContainsString('No query results for model [TestModelWithSoftDelete]', $e->getMessage());
         }
 
         try {
             $this->repository->update(3, []);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $this->assertContains('No query results for model [TestModel]', $e->getMessage());
+        } catch (ModelNotFoundException $e) {
+            $this->assertStringContainsString('No query results for model [TestModel]', $e->getMessage());
         }
     }
 
@@ -309,14 +312,14 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     {
         try {
             $this->repositoryWithSoftDelete->delete(3);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $this->assertContains('No query results for model [TestModelWithSoftDelete]', $e->getMessage());
+        } catch (ModelNotFoundException $e) {
+            $this->assertStringContainsString('No query results for model [TestModelWithSoftDelete]', $e->getMessage());
         }
 
         try {
             $this->repository->delete(3);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $this->assertContains('No query results for model [TestModel]', $e->getMessage());
+        } catch (ModelNotFoundException $e) {
+            $this->assertStringContainsString('No query results for model [TestModel]', $e->getMessage());
         }
     }
 
@@ -339,8 +342,8 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($this->repository->findByTrashed('id', 1, '=', false));
         try {
             $this->repository->forceDelete(3);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $this->assertContains('No query results for model [TestModel]', $e->getMessage());
+        } catch (ModelNotFoundException $e) {
+            $this->assertStringContainsString('No query results for model [TestModel]', $e->getMessage());
         }
     }
 
@@ -352,14 +355,14 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     {
         try {
             $this->repositoryWithSoftDelete->delete(3);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $this->assertContains('No query results for model [TestModelWithSoftDelete]', $e->getMessage());
+        } catch (ModelNotFoundException $e) {
+            $this->assertStringContainsString('No query results for model [TestModelWithSoftDelete]', $e->getMessage());
         }
 
         try {
             $this->repository->delete(3);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $this->assertContains('No query results for model [TestModel]', $e->getMessage());
+        } catch (ModelNotFoundException $e) {
+            $this->assertStringContainsString('No query results for model [TestModel]', $e->getMessage());
         }
     }
 
@@ -383,8 +386,8 @@ class EloquentCrudTest extends \PHPUnit\Framework\TestCase
     {
         try {
             $this->repositoryWithSoftDelete->restore(1);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $this->assertContains('No query results for model [TestModelWithSoftDelete]', $e->getMessage());
+        } catch (ModelNotFoundException $e) {
+            $this->assertStringContainsString('No query results for model [TestModelWithSoftDelete]', $e->getMessage());
         }
 
         $this->assertFalse($this->repository->restore(3));

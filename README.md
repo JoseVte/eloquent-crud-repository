@@ -67,7 +67,7 @@ Instead, you may of course manually update your require block and run composer u
 ```json
 {
     "require": {
-        "josrom/eloquent-crud-repository": "^1.0"
+        "josrom/eloquent-crud-repository": "^2.0"
     }
 }
 ```

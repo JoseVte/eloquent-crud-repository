@@ -2,6 +2,7 @@
 
 namespace Eloquent\Crud\Repository;
 
+use Illuminate\Support\Arr;
 use Eloquent\Crud\Exception\AccessDeniedException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -248,7 +249,7 @@ class EloquentCrudRepository implements CrudRepository
     {
         $result = $model->toArray();
         if (isset($this->model->select) && is_array($this->model->select)) {
-            array_intersect_key($result, $this->model->select);
+            $result = array_intersect_key($result, $this->model->select);
         }
 
         return $result;
@@ -611,6 +612,6 @@ class EloquentCrudRepository implements CrudRepository
      */
     protected function hasSoftDeletes()
     {
-        return array_has(class_uses($this->model), 'Illuminate\Database\Eloquent\SoftDeletes');
+        return Arr::has(class_uses($this->model), 'Illuminate\Database\Eloquent\SoftDeletes');
     }
 }
