@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Capsule\Manager;
+use Illuminate\Database\Schema\Blueprint;
 
 class TestDatabase
 {
@@ -16,16 +17,16 @@ class TestDatabase
         $capsule->bootEloquent();
     }
 
-    public function createTables()
+    public function createTables(): void
     {
         Manager::schema('default')->dropIfExists('test_models');
-        Manager::schema('default')->create('test_models', function (\Illuminate\Database\Schema\Blueprint $table) {
+        Manager::schema('default')->create('test_models', static function (Blueprint $table) {
             $table->increments('id');
             $table->string('msg')->nullable();
             $table->timestamps();
         });
         Manager::schema('default')->dropIfExists('test_model_with_soft_deletes');
-        Manager::schema('default')->create('test_model_with_soft_deletes', function (\Illuminate\Database\Schema\Blueprint $table) {
+        Manager::schema('default')->create('test_model_with_soft_deletes', static function (Blueprint $table) {
             $table->increments('id');
             $table->string('msg')->nullable();
             $table->timestamps();
@@ -36,7 +37,7 @@ class TestDatabase
     /**
      * @throws \Exception
      */
-    public function insertModels()
+    public function insertModels(): void
     {
         TestModel::create();
         TestModel::create();

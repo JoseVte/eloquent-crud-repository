@@ -1,8 +1,11 @@
 <?php
 
-class TestModelWithSoftDelete extends \Illuminate\Database\Eloquent\Model
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class TestModelWithSoftDelete extends Model
 {
-    use \Illuminate\Database\Eloquent\SoftDeletes;
+    use SoftDeletes;
 
     protected $fillable = ['msg'];
 }

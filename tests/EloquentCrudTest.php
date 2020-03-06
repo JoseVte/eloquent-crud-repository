@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Eloquent\Crud\Repository\EloquentCrudRepository;
+use Eloquent\Crud\Repository\Eloquent\CrudRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\MassAssignmentException;
 
@@ -18,12 +18,12 @@ class EloquentCrudTest extends TestCase
     private $modelWithSoftDelete;
 
     /**
-     * @var \Eloquent\Crud\Repository\EloquentCrudRepository
+     * @var \Eloquent\Crud\Repository\CrudRepository
      */
     private $repository;
 
     /**
-     * @var \Eloquent\Crud\Repository\EloquentCrudRepository
+     * @var \Eloquent\Crud\Repository\CrudRepository
      */
     private $repositoryWithSoftDelete;
 
@@ -42,26 +42,26 @@ class EloquentCrudTest extends TestCase
         $this->database = new TestDatabase();
         $this->model = new TestModel();
         $this->modelWithSoftDelete = new TestModelWithSoftDelete();
-        $this->repository = new EloquentCrudRepository($this->model);
-        $this->repositoryWithSoftDelete = new EloquentCrudRepository($this->modelWithSoftDelete);
+        $this->repository = new CrudRepository($this->model);
+        $this->repositoryWithSoftDelete = new CrudRepository($this->modelWithSoftDelete);
 
         $this->database->createTables();
         $this->database->insertModels();
     }
 
-    public function testAllModels()
+    public function testAllModels(): void
     {
         $this->assertCount(2, $this->repositoryWithSoftDelete->all());
         $this->assertCount(2, $this->repository->all());
     }
 
-    public function testAllWithTrashedModels()
+    public function testAllWithTrashedModels(): void
     {
         $this->assertCount(5, $this->repositoryWithSoftDelete->allWithTrashed());
         $this->assertCount(2, $this->repository->allWithTrashed());
     }
 
-    public function testAllOnlyTrashedModels()
+    public function testAllOnlyTrashedModels(): void
     {
         $this->assertCount(3, $this->repositoryWithSoftDelete->allTrashed());
         $this->assertCount(0, $this->repository->allTrashed());
@@ -70,7 +70,7 @@ class EloquentCrudTest extends TestCase
     /**
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function testFindModel()
+    public function testFindModel(): void
     {
         $this->assertNotNull($this->repositoryWithSoftDelete->find(1));
 
@@ -92,7 +92,7 @@ class EloquentCrudTest extends TestCase
     /**
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function testFindWithTrashedModel()
+    public function testFindWithTrashedModel(): void
     {
         $this->assertNotNull($this->repositoryWithSoftDelete->findWithTrashed(1));
         $this->assertNotNull($this->repositoryWithSoftDelete->findWithTrashed(3));
@@ -109,7 +109,7 @@ class EloquentCrudTest extends TestCase
     /**
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function testFindOnlyTrashedModel()
+    public function testFindOnlyTrashedModel(): void
     {
         try {
             $this->repositoryWithSoftDelete->findTrashed(1);
@@ -128,7 +128,7 @@ class EloquentCrudTest extends TestCase
     /**
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function testFindByModel()
+    public function testFindByModel(): void
     {
         $this->assertNotNull($this->repositoryWithSoftDelete->findBy('id', 1));
 
@@ -150,7 +150,7 @@ class EloquentCrudTest extends TestCase
     /**
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function testFindByWithTrashedModel()
+    public function testFindByWithTrashedModel(): void
     {
         $this->assertNotNull($this->repositoryWithSoftDelete->findByWithTrashed('id', 1));
         $this->assertNotNull($this->repositoryWithSoftDelete->findByWithTrashed('id', 3));
@@ -167,7 +167,7 @@ class EloquentCrudTest extends TestCase
     /**
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function testFindByOnlyTrashedModel()
+    public function testFindByOnlyTrashedModel(): void
     {
         try {
             $this->repositoryWithSoftDelete->findByTrashed('id', 1);
@@ -183,7 +183,7 @@ class EloquentCrudTest extends TestCase
         }
     }
 
-    public function testNewModel()
+    public function testNewModel(): void
     {
         $this->assertNotNull($this->repositoryWithSoftDelete->newModel());
         $this->assertFalse($this->repositoryWithSoftDelete->newModel()->exists);
@@ -192,7 +192,7 @@ class EloquentCrudTest extends TestCase
         $this->assertFalse($this->repository->newModel()->exists);
     }
 
-    public function testNewModelWithParams()
+    public function testNewModelWithParams(): void
     {
         $this->assertNotNull($this->repositoryWithSoftDelete->newModel(['msg' => 'test']));
         $this->assertFalse($this->repositoryWithSoftDelete->newModel(['msg' => 'test'])->exists);
@@ -218,7 +218,7 @@ class EloquentCrudTest extends TestCase
     /**
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function testFormatModel()
+    public function testFormatModel(): void
     {
         $model = $this->repositoryWithSoftDelete->find(1);
         $this->assertArrayHasKey('id', $this->repositoryWithSoftDelete->formatModel($model));
@@ -232,7 +232,7 @@ class EloquentCrudTest extends TestCase
     /**
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function testCreate()
+    public function testCreate(): void
     {
         $model = $this->repositoryWithSoftDelete->create([]);
         $this->assertNotNull($model);
@@ -246,7 +246,7 @@ class EloquentCrudTest extends TestCase
     /**
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function testCreateWithParams()
+    public function testCreateWithParams(): void
     {
         $model = $this->repositoryWithSoftDelete->create(['msg' => 'test']);
         $this->assertNotNull($model);
@@ -260,7 +260,7 @@ class EloquentCrudTest extends TestCase
     /**
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $model = $this->repositoryWithSoftDelete->find(1);
         $this->assertNull($model->msg);
@@ -276,7 +276,7 @@ class EloquentCrudTest extends TestCase
     /**
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function testUpdateNotFound()
+    public function testUpdateNotFound(): void
     {
         try {
             $this->repositoryWithSoftDelete->update(3, []);
@@ -295,7 +295,7 @@ class EloquentCrudTest extends TestCase
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
      */
-    public function testDelete()
+    public function testDelete(): void
     {
         $this->assertTrue($this->repositoryWithSoftDelete->delete(1));
         $this->assertNotNull($this->repositoryWithSoftDelete->findTrashed(1));
@@ -308,7 +308,7 @@ class EloquentCrudTest extends TestCase
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
      */
-    public function testDeleteNotFound()
+    public function testDeleteNotFound(): void
     {
         try {
             $this->repositoryWithSoftDelete->delete(3);
@@ -327,19 +327,20 @@ class EloquentCrudTest extends TestCase
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
      */
-    public function testForceDelete()
+    public function testForceDelete(): void
     {
         $result = $this->repositoryWithSoftDelete->forceDelete(1);
-        $deleted = is_null($result) ? true : $result;
+        $deleted = $result ?? true;
         $this->assertTrue($deleted);
         $this->assertNull($this->repositoryWithSoftDelete->findByTrashed('id', 1, '=', false));
         $result = $this->repositoryWithSoftDelete->forceDelete(3);
-        $deleted = is_null($result) ? true : $result;
+        $deleted = $result ?? true;
         $this->assertTrue($deleted);
         $this->assertNull($this->repositoryWithSoftDelete->findByTrashed('id', 3, '=', false));
 
         $this->assertTrue($this->repository->forceDelete(1));
         $this->assertNull($this->repository->findByTrashed('id', 1, '=', false));
+
         try {
             $this->repository->forceDelete(3);
         } catch (ModelNotFoundException $e) {
@@ -351,7 +352,7 @@ class EloquentCrudTest extends TestCase
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
      */
-    public function testForceDeleteNotFound()
+    public function testForceDeleteNotFound(): void
     {
         try {
             $this->repositoryWithSoftDelete->delete(3);
@@ -370,7 +371,7 @@ class EloquentCrudTest extends TestCase
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
      */
-    public function testRestore()
+    public function testRestore(): void
     {
         $this->assertTrue($this->repositoryWithSoftDelete->restore(3));
         $this->assertNotNull($this->repositoryWithSoftDelete->find(3));
@@ -382,7 +383,7 @@ class EloquentCrudTest extends TestCase
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
      */
-    public function testRestoreNotFound()
+    public function testRestoreNotFound(): void
     {
         try {
             $this->repositoryWithSoftDelete->restore(1);
@@ -393,7 +394,7 @@ class EloquentCrudTest extends TestCase
         $this->assertFalse($this->repository->restore(3));
     }
 
-    public function testPaginate()
+    public function testPaginate(): void
     {
         $paginationData = $this->repositoryWithSoftDelete->paginate($this->modelWithSoftDelete->where('id', 1), 1, 3);
         $this->assertObjectHasAttribute('result', $paginationData);
@@ -416,7 +417,7 @@ class EloquentCrudTest extends TestCase
         $this->assertEquals(1, $paginationData->pages);
     }
 
-    public function testPaginateCollection()
+    public function testPaginateCollection(): void
     {
         $paginationData = $this->repositoryWithSoftDelete->paginateCollection($this->repositoryWithSoftDelete->allWithTrashed(), 1, 3);
         $this->assertObjectHasAttribute('result', $paginationData);
@@ -439,7 +440,7 @@ class EloquentCrudTest extends TestCase
         $this->assertEquals(1, $paginationData->pages);
     }
 
-    public function testPagination()
+    public function testPagination(): void
     {
         $paginationData = $this->repositoryWithSoftDelete->pagination(1, 3);
         $this->assertObjectHasAttribute('result', $paginationData);
@@ -462,7 +463,7 @@ class EloquentCrudTest extends TestCase
         $this->assertEquals(1, $paginationData->pages);
     }
 
-    public function testPaginationWithTrashed()
+    public function testPaginationWithTrashed(): void
     {
         $paginationData = $this->repositoryWithSoftDelete->paginationWithTrashed(1, 3);
         $this->assertObjectHasAttribute('result', $paginationData);
@@ -485,7 +486,7 @@ class EloquentCrudTest extends TestCase
         $this->assertEquals(1, $paginationData->pages);
     }
 
-    public function testPaginationOnlyTrashed()
+    public function testPaginationOnlyTrashed(): void
     {
         $paginationData = $this->repositoryWithSoftDelete->paginationOnlyTrashed(1, 3);
         $this->assertObjectHasAttribute('result', $paginationData);

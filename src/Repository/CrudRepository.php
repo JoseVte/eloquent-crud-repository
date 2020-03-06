@@ -2,8 +2,18 @@
 
 namespace Eloquent\Crud\Repository;
 
+use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
+
 interface CrudRepository
 {
+    /**
+     * Return the model to allow create custom queries
+     *
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\SoftDeletes
+     */
+    public function model(): Model;
+
     /**
      * All the models. If the model uses SoftDeletes, use the other methods to obtain all the models: allWithTrashed, allTrashed.
      *
@@ -29,7 +39,7 @@ interface CrudRepository
      *
      * @return \Illuminate\Support\Collection
      */
-    public function allTrashed(array $with = []);
+    public function allTrashed(array $with = []): Collection;
 
     /**
      * Find a model by the primary key.
@@ -41,7 +51,7 @@ interface CrudRepository
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function find($id, array $with = []);
+    public function find(int $id, array $with = []);
 
     /**
      * Find a model with the trashed models.
@@ -53,7 +63,7 @@ interface CrudRepository
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function findWithTrashed($id, array $with = []);
+    public function findWithTrashed(int $id, array $with = []);
 
     /**
      * Find a model only in the trashed models.
@@ -65,7 +75,7 @@ interface CrudRepository
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function findTrashed($id, array $with = []);
+    public function findTrashed(int $id, array $with = []);
 
     /**
      * Find by a field and value.
@@ -119,7 +129,7 @@ interface CrudRepository
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function newModel(array $params = []);
+    public function newModel(array $params = []): Model;
 
     /**
      * Formats the model to use in APIs.
@@ -128,7 +138,7 @@ interface CrudRepository
      *
      * @return array
      */
-    public function formatModel($model);
+    public function formatModel($model): array;
 
     /**
      * Creates a model.
@@ -139,7 +149,7 @@ interface CrudRepository
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function create($params);
+    public function create($params): Model;
 
     /**
      * Updates a model.
@@ -151,7 +161,7 @@ interface CrudRepository
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function update($id, $params);
+    public function update(int $id, $params): Model;
 
     /**
      * Deletes a model.
@@ -163,7 +173,7 @@ interface CrudRepository
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
      */
-    public function delete($id);
+    public function delete($id): bool;
 
     /**
      * Force-deletes a model.
@@ -175,7 +185,7 @@ interface CrudRepository
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
      */
-    public function forceDelete($id);
+    public function forceDelete($id): bool;
 
     /**
      * Restores a previously deleted model.
@@ -186,7 +196,7 @@ interface CrudRepository
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function restore($id);
+    public function restore($id): bool;
 
     /**
      * Paginates a query.

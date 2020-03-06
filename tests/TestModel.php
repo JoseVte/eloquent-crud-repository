@@ -1,6 +1,8 @@
 <?php
 
-class TestModel extends \Illuminate\Database\Eloquent\Model
+use Illuminate\Database\Eloquent\Model;
+
+class TestModel extends Model
 {
     protected $fillable = ['msg'];
 }

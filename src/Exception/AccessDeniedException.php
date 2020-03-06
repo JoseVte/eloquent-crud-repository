@@ -3,6 +3,7 @@
 namespace Eloquent\Crud\Exception;
 
 use Exception;
+use Throwable;
 
 class AccessDeniedException extends Exception
 {
@@ -13,12 +14,15 @@ class AccessDeniedException extends Exception
 
     /**
      * AccessDeniedException constructor.
+     *
+     * @param string     $message
+     * @param int        $code
+     * @param \Throwable $previous
      */
-    public function __construct()
+    public function __construct($message = 'Access denied', $code = 403, Throwable $previous = null)
     {
+        parent::__construct($message, $code, $previous);
         $this->arguments = func_get_args();
-        $this->code = 403;
-        $this->message = 'Access denied';
     }
 
     /**
@@ -26,7 +30,7 @@ class AccessDeniedException extends Exception
      *
      * @return array
      */
-    public function getArguments()
+    public function getArguments(): array
     {
         return $this->arguments;
     }
@@ -36,7 +40,7 @@ class AccessDeniedException extends Exception
      *
      * @return int
      */
-    public function countArguments()
+    public function countArguments(): int
     {
         return count($this->arguments);
     }
