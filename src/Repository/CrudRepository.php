@@ -21,7 +21,7 @@ interface CrudRepository
      *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function all(array $with = []);
+    public function all(array $with = []) : Collection;
 
     /**
      * All the models with trashed.
@@ -30,7 +30,7 @@ interface CrudRepository
      *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function allWithTrashed(array $with = []);
+    public function allWithTrashed(array $with = []) : Collection;
 
     /**
      * All the models trashed.
@@ -47,11 +47,11 @@ interface CrudRepository
      * @param mixed $id
      * @param array $with
      *
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function find(int $id, array $with = []);
+    public function find(int $id, array $with = []) : Model;
 
     /**
      * Find a model with the trashed models.
@@ -59,11 +59,11 @@ interface CrudRepository
      * @param int   $id
      * @param array $with
      *
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function findWithTrashed(int $id, array $with = []);
+    public function findWithTrashed(int $id, array $with = []) : Model;
 
     /**
      * Find a model only in the trashed models.
@@ -71,16 +71,16 @@ interface CrudRepository
      * @param int   $id
      * @param array $with
      *
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function findTrashed(int $id, array $with = []);
+    public function findTrashed(int $id, array $with = []) : Model;
 
     /**
      * Find by a field and value.
      *
-     * @param mixed  $field
+     * @param string $field
      * @param mixed  $value
      * @param string $comparison
      * @param bool   $strict
@@ -90,12 +90,12 @@ interface CrudRepository
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function findBy($field, $value, $comparison = '=', $strict = true, array $with = []);
+    public function findBy(string $field, $value, string $comparison = '=', bool $strict = true, array $with = []) : ?Model;
 
     /**
      * Find by a field and value with trashed models.
      *
-     * @param mixed  $field
+     * @param string $field
      * @param mixed  $value
      * @param string $comparison
      * @param bool   $strict
@@ -105,12 +105,12 @@ interface CrudRepository
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function findByWithTrashed($field, $value, $comparison = '=', $strict = true, array $with = []);
+    public function findByWithTrashed(string $field, $value, string $comparison = '=', bool $strict = true, array $with = []) : ?Model;
 
     /**
      * Find by a field and value only in trashed models.
      *
-     * @param mixed  $field
+     * @param string $field
      * @param mixed  $value
      * @param string $comparison
      * @param bool   $strict
@@ -120,7 +120,7 @@ interface CrudRepository
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function findByTrashed($field, $value, $comparison = '=', $strict = true, array $with = []);
+    public function findByTrashed(string $field, $value, string $comparison = '=', bool $strict = true, array $with = []) : ?Model;
 
     /**
      * Gets a new model with some fields filled (optional).
@@ -138,7 +138,7 @@ interface CrudRepository
      *
      * @return array
      */
-    public function formatModel($model): array;
+    public function formatModel(Model $model): array;
 
     /**
      * Creates a model.
@@ -149,7 +149,7 @@ interface CrudRepository
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function create($params): Model;
+    public function create(array $params): Model;
 
     /**
      * Updates a model.
@@ -161,7 +161,7 @@ interface CrudRepository
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function update(int $id, $params): Model;
+    public function update(int $id, array $params): Model;
 
     /**
      * Deletes a model.
@@ -173,7 +173,7 @@ interface CrudRepository
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
      */
-    public function delete($id): bool;
+    public function delete(int $id): bool;
 
     /**
      * Force-deletes a model.
@@ -185,7 +185,7 @@ interface CrudRepository
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
      */
-    public function forceDelete($id): bool;
+    public function forceDelete(int $id): bool;
 
     /**
      * Restores a previously deleted model.
@@ -196,7 +196,7 @@ interface CrudRepository
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function restore($id): bool;
+    public function restore(int $id): bool;
 
     /**
      * Paginates a query.
@@ -211,7 +211,7 @@ interface CrudRepository
      *                - page:   Current page
      *                - pages: Total of pages
      */
-    public function paginate($query, $page = 0, $limit = 15);
+    public function paginate($query, int $page = 0, int $limit = 15) : object;
 
     /**
      * Paginates a collection.
@@ -226,7 +226,7 @@ interface CrudRepository
      *                - page:   Current page
      *                - pages: Total of pages
      */
-    public function paginateCollection($collection, $page = 0, $limit = 15);
+    public function paginateCollection(Collection $collection, int $page = 0, int $limit = 15) : object;
 
     /**
      * Gets the model paginated.
@@ -240,7 +240,7 @@ interface CrudRepository
      *                - page:   Current page
      *                - pages: Total of pages
      */
-    public function pagination($page = 0, $limit = 15);
+    public function pagination(int $page = 0, int $limit = 15);
 
     /**
      * Gets the model paginated with trashed models.
@@ -254,7 +254,7 @@ interface CrudRepository
      *                - page:   Current page
      *                - pages: Total of pages
      */
-    public function paginationWithTrashed($page = 0, $limit = 15);
+    public function paginationWithTrashed(int $page = 0, int $limit = 15) : object;
 
     /**
      * Gets the model paginated only trashed models.
@@ -268,5 +268,5 @@ interface CrudRepository
      *                - page:   Current page
      *                - pages: Total of pages
      */
-    public function paginationOnlyTrashed($page = 0, $limit = 15);
+    public function paginationOnlyTrashed(int $page = 0, int $limit = 15) : object;
 }

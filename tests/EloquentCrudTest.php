@@ -1,36 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 use PHPUnit\Framework\TestCase;
 use Eloquent\Crud\Repository\Eloquent\CrudRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\MassAssignmentException;
 
-class EloquentCrudTest extends TestCase
+final class EloquentCrudTest extends TestCase
 {
     /**
      * @var \TestModel|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder
      */
-    private $model;
+    private TestModel $model;
 
     /**
      * @var \TestModelWithSoftDelete|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder
      */
-    private $modelWithSoftDelete;
+    private TestModelWithSoftDelete $modelWithSoftDelete;
 
     /**
-     * @var \Eloquent\Crud\Repository\CrudRepository
+     * @var \Eloquent\Crud\Repository\Eloquent\CrudRepository
      */
-    private $repository;
-
-    /**
-     * @var \Eloquent\Crud\Repository\CrudRepository
-     */
-    private $repositoryWithSoftDelete;
+    private CrudRepository $repository, $repositoryWithSoftDelete;
 
     /**
      * @var \TestDatabase
      */
-    private $database;
+    private TestDatabase $database;
 
     /**
      * @throws \Exception

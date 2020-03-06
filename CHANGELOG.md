@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.0](https://github.com/JoseVte/eloquent-crud-repository/tree/3.0.0) (2020-03-06)
+
+[Full Changelog](https://github.com/JoseVte/eloquent-crud-repository/compare/2.1.0...3.0.0)
+
+### Implemented enhancements:
+
+* :arrow_double_up: Updated minimum requirements to Laravel 7 and PHP 7.4
+
 ## [2.1.0](https://github.com/JoseVte/eloquent-crud-repository/tree/2.1.0) (2020-03-06)
 
 [Full Changelog](https://github.com/JoseVte/eloquent-crud-repository/compare/2.0.0...2.1.0)
@@ -14,8 +22,8 @@
 
 ### Implemented enhancements:
 
-* :arrow_double_up: Updated minimun requeriments to Laravel 6 and PHP 7.2
-* Remove unnedeed files
+* :arrow_double_up: Updated minimum requirements to Laravel 6 and PHP 7.2
+* Remove unneeded files
 
 ## [1.0.0](https://github.com/JoseVte/eloquent-crud-repository/tree/1.0.0) (2018-06-07)
 

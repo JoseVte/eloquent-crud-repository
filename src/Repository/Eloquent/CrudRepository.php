@@ -15,14 +15,14 @@ class CrudRepository implements CrudRepositoryContract
     /**
      * @var \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\SoftDeletes
      */
-    protected $model;
+    protected Model $model;
 
     /**
      * EloquentCrudRepository constructor.
      *
      * @param \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder $model
      */
-    public function __construct($model)
+    public function __construct(Model $model)
     {
         $this->model = $model;
     }
@@ -44,7 +44,7 @@ class CrudRepository implements CrudRepositoryContract
      *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function all(array $with = [])
+    public function all(array $with = []) : Collection
     {
         return $this->model->with($with)->get();
     }
@@ -56,7 +56,7 @@ class CrudRepository implements CrudRepositoryContract
      *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function allWithTrashed(array $with = [])
+    public function allWithTrashed(array $with = []) : Collection
     {
         if ($this->hasSoftDeletes()) {
             return $this->model()->withTrashed()->with($with)->get();
@@ -87,11 +87,11 @@ class CrudRepository implements CrudRepositoryContract
      * @param mixed $id
      * @param array $with
      *
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function find(int $id, array $with = [])
+    public function find(int $id, array $with = []) : Model
     {
         $model = $this->model->with($with)->findOrFail($id);
         $this->checkCanShow($model);
@@ -105,11 +105,11 @@ class CrudRepository implements CrudRepositoryContract
      * @param int   $id
      * @param array $with
      *
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function findWithTrashed(int $id, array $with = [])
+    public function findWithTrashed(int $id, array $with = []) : Model
     {
         if ($this->hasSoftDeletes()) {
             $model = $this->model()->withTrashed()->with($with)->findOrFail($id);
@@ -128,11 +128,11 @@ class CrudRepository implements CrudRepositoryContract
      * @param int   $id
      * @param array $with
      *
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function findTrashed(int $id, array $with = [])
+    public function findTrashed(int $id, array $with = []) : Model
     {
         if ($this->hasSoftDeletes()) {
             $model = $this->model()->onlyTrashed()->with($with)->findOrFail($id);
@@ -147,7 +147,7 @@ class CrudRepository implements CrudRepositoryContract
     /**
      * Find by a field and value.
      *
-     * @param mixed  $field
+     * @param string $field
      * @param mixed  $value
      * @param string $comparison
      * @param bool   $strict
@@ -157,7 +157,7 @@ class CrudRepository implements CrudRepositoryContract
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function findBy($field, $value, $comparison = '=', $strict = true, array $with = [])
+    public function findBy(string $field, $value, string $comparison = '=', bool $strict = true, array $with = []) : ?Model
     {
         $query = $this->model()->with($with)->where($field, $comparison, $value);
 
@@ -175,7 +175,7 @@ class CrudRepository implements CrudRepositoryContract
     /**
      * Find by a field and value with trashed models.
      *
-     * @param mixed  $field
+     * @param string $field
      * @param mixed  $value
      * @param string $comparison
      * @param bool   $strict
@@ -185,7 +185,7 @@ class CrudRepository implements CrudRepositoryContract
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function findByWithTrashed($field, $value, $comparison = '=', $strict = true, array $with = [])
+    public function findByWithTrashed(string $field, $value, string $comparison = '=', bool $strict = true, array $with = []) : ?Model
     {
         if ($this->hasSoftDeletes()) {
             $query = $this->model()->withTrashed()->with($with)->where($field, $comparison, $value);
@@ -207,7 +207,7 @@ class CrudRepository implements CrudRepositoryContract
     /**
      * Find by a field and value only in trashed models.
      *
-     * @param mixed  $field
+     * @param string $field
      * @param mixed  $value
      * @param string $comparison
      * @param bool   $strict
@@ -217,7 +217,7 @@ class CrudRepository implements CrudRepositoryContract
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function findByTrashed($field, $value, $comparison = '=', $strict = true, array $with = [])
+    public function findByTrashed(string $field, $value, string $comparison = '=', bool $strict = true, array $with = []) : ?Model
     {
         if ($this->hasSoftDeletes()) {
             $query = $this->model()->onlyTrashed()->with($with)->where($field, $comparison, $value);
@@ -226,6 +226,10 @@ class CrudRepository implements CrudRepositoryContract
                 $model = $query->firstOrFail();
             } else {
                 $model = $query->first();
+            }
+
+            if ($strict && $model === null) {
+                throw (new ModelNotFoundException())->setModel(get_class($this->model));
             }
 
             $this->checkCanShow($model);
@@ -259,7 +263,7 @@ class CrudRepository implements CrudRepositoryContract
      *
      * @return array
      */
-    public function formatModel($model): array
+    public function formatModel(Model $model): array
     {
         $result = $model->toArray();
         if (data_get($this->model, 'select') && is_array($this->model->select)) {
@@ -278,7 +282,7 @@ class CrudRepository implements CrudRepositoryContract
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function create($params): Model
+    public function create(array $params): Model
     {
         $this->checkCanCreate($params);
         $model = $this->model->create($params);
@@ -296,7 +300,7 @@ class CrudRepository implements CrudRepositoryContract
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function update(int $id, $params): Model
+    public function update(int $id, array $params): Model
     {
         $model = $this->model->findOrFail($id);
         $this->checkCanUpdate($model, $params);
@@ -316,7 +320,7 @@ class CrudRepository implements CrudRepositoryContract
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
      */
-    public function delete($id): bool
+    public function delete(int $id): bool
     {
         $model = $this->model->findOrFail($id);
         $this->checkCanDelete($model);
@@ -334,7 +338,7 @@ class CrudRepository implements CrudRepositoryContract
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
      */
-    public function forceDelete($id): bool
+    public function forceDelete(int $id): bool
     {
         if ($this->hasSoftDeletes()) {
             $model = $this->model()->withTrashed()->findOrFail($id);
@@ -355,7 +359,7 @@ class CrudRepository implements CrudRepositoryContract
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    public function restore($id): bool
+    public function restore(int $id): bool
     {
         if ($this->hasSoftDeletes()) {
             $model = $this->model()->onlyTrashed()->findOrFail($id);
@@ -380,7 +384,7 @@ class CrudRepository implements CrudRepositoryContract
      *                - page:   Current page
      *                - pages: Total of pages
      */
-    public function paginate($query, $page = 0, $limit = 15)
+    public function paginate($query, int $page = 0, int $limit = 15) : object
     {
         $page = (int) $page;
         $count = $query->count();
@@ -409,7 +413,7 @@ class CrudRepository implements CrudRepositoryContract
      *                - page:   Current page
      *                - pages: Total of pages
      */
-    public function paginateCollection($collection, $page = 0, $limit = 15)
+    public function paginateCollection(Collection $collection, int $page = 0, int $limit = 15) : object
     {
         $page = (int) $page;
         $count = $collection->count();
@@ -437,7 +441,7 @@ class CrudRepository implements CrudRepositoryContract
      *                - page:   Current page
      *                - pages: Total of pages
      */
-    public function pagination($page = 0, $limit = 15)
+    public function pagination(int $page = 0, int $limit = 15) : object
     {
         return $this->paginate($this->model, $page, $limit);
     }
@@ -454,7 +458,7 @@ class CrudRepository implements CrudRepositoryContract
      *                - page:   Current page
      *                - pages: Total of pages
      */
-    public function paginationWithTrashed($page = 0, $limit = 15)
+    public function paginationWithTrashed(int $page = 0, int $limit = 15) : object
     {
         if ($this->hasSoftDeletes()) {
             $query = $this->model()->withTrashed();
@@ -477,7 +481,7 @@ class CrudRepository implements CrudRepositoryContract
      *                - page:   Current page
      *                - pages: Total of pages
      */
-    public function paginationOnlyTrashed($page = 0, $limit = 15)
+    public function paginationOnlyTrashed(int $page = 0, int $limit = 15) : object
     {
         if ($this->hasSoftDeletes()) {
             $query = $this->model()->onlyTrashed();
@@ -491,11 +495,11 @@ class CrudRepository implements CrudRepositoryContract
     /**
      * Checks if the user is allowed to see an instance of this model.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param \Illuminate\Database\Eloquent\Model|null $model
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    protected function checkCanShow($model): void
+    protected function checkCanShow(?Model $model): void
     {
         if (!$this->canShow($model)) {
             throw new AccessDeniedException($model);
@@ -509,7 +513,7 @@ class CrudRepository implements CrudRepositoryContract
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    protected function checkCanCreate($params): void
+    protected function checkCanCreate(array $params): void
     {
         if (!$this->canCreate($params)) {
             throw new AccessDeniedException($params);
@@ -524,7 +528,7 @@ class CrudRepository implements CrudRepositoryContract
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    protected function checkCanUpdate($model, $newValues): void
+    protected function checkCanUpdate(Model$model, array $newValues): void
     {
         if (!$this->canUpdate($model, $newValues)) {
             throw new AccessDeniedException($model, $newValues);
@@ -538,7 +542,7 @@ class CrudRepository implements CrudRepositoryContract
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    protected function checkCanDelete($model): void
+    protected function checkCanDelete(Model $model): void
     {
         if (!$this->canDelete($model)) {
             throw new AccessDeniedException($model);
@@ -552,7 +556,7 @@ class CrudRepository implements CrudRepositoryContract
      *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      */
-    protected function checkCanRestore($model): void
+    protected function checkCanRestore(Model $model): void
     {
         if (!$this->canRestore($model)) {
             throw new AccessDeniedException($model);
@@ -562,11 +566,11 @@ class CrudRepository implements CrudRepositoryContract
     /**
      * Determines if the user is allowed to see an instance of this model.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param \Illuminate\Database\Eloquent\Model|null $model
      *
      * @return bool whether the user is allowed or not
      */
-    protected function canShow($model): bool
+    protected function canShow(?Model $model): bool
     {
         return true;
     }
@@ -578,7 +582,7 @@ class CrudRepository implements CrudRepositoryContract
      *
      * @return bool whether the user is allowed or not
      */
-    protected function canCreate($params): bool
+    protected function canCreate(array $params): bool
     {
         return true;
     }
@@ -591,7 +595,7 @@ class CrudRepository implements CrudRepositoryContract
      *
      * @return bool whether the user is allowed or not
      */
-    protected function canUpdate($model, $newValues): bool
+    protected function canUpdate(Model $model, array $newValues): bool
     {
         return true;
     }
@@ -603,7 +607,7 @@ class CrudRepository implements CrudRepositoryContract
      *
      * @return bool whether the user is allowed or not
      */
-    protected function canDelete($model): bool
+    protected function canDelete(Model $model): bool
     {
         return true;
     }
@@ -615,7 +619,7 @@ class CrudRepository implements CrudRepositoryContract
      *
      * @return bool whether the user is allowed or not
      */
-    protected function canRestore($model): bool
+    protected function canRestore(Model $model): bool
     {
         return true;
     }
