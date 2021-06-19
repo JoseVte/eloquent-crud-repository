@@ -1,10 +1,10 @@
 # Eloquent CRUD Repository
 
 <p align="center">
-<a href="https://travis-ci.org/josrom/eloquent-crud-repository"><img src="https://travis-ci.org/josrom/eloquent-crud-repository.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/josrom/eloquent-crud-repository"><img src="https://poser.pugx.org/josrom/eloquent-crud-repository/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/josrom/eloquent-crud-repository"><img src="https://poser.pugx.org/josrom/eloquent-crud-repository/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/josrom/eloquent-crud-repository"><img src="https://poser.pugx.org/josrom/eloquent-crud-repository/license.svg" alt="License"></a>
+[![Build Status](https://travis-ci.com/JoseVte/eloquent-crud-repository.svg?branch=master)](https://travis-ci.com/JoseVte/eloquent-crud-repository)
+[![Latest Stable Version](http://poser.pugx.org/josrom/eloquent-crud-repository/v)](https://packagist.org/packages/josrom/eloquent-crud-repository)
+[![Total Downloads](http://poser.pugx.org/josrom/eloquent-crud-repository/downloads)](https://packagist.org/packages/josrom/eloquent-crud-repository)
+[![License](http://poser.pugx.org/josrom/eloquent-crud-repository/license)](https://packagist.org/packages/josrom/eloquent-crud-repository)
 </p>
 
 
