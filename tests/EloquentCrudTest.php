@@ -12,22 +12,22 @@ final class EloquentCrudTest extends TestCase
     /**
      * @var \TestModel|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder
      */
-    private TestModel $model;
+    private $model;
 
     /**
      * @var \TestModelWithSoftDelete|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder
      */
-    private TestModelWithSoftDelete $modelWithSoftDelete;
+    private $modelWithSoftDelete;
 
     /**
      * @var \Eloquent\Crud\Repository\Eloquent\CrudRepository
      */
-    private CrudRepository $repository, $repositoryWithSoftDelete;
+    private $repository, $repositoryWithSoftDelete;
 
     /**
      * @var \TestDatabase
      */
-    private TestDatabase $database;
+    private $database;
 
     /**
      * @throws \Exception

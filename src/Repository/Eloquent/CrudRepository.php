@@ -15,7 +15,7 @@ class CrudRepository implements CrudRepositoryContract
     /**
      * @var \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\SoftDeletes
      */
-    protected Model $model;
+    protected $model;
 
     /**
      * EloquentCrudRepository constructor.
