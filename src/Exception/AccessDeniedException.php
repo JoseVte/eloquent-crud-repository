@@ -15,9 +15,9 @@ class AccessDeniedException extends Exception
     /**
      * AccessDeniedException constructor.
      *
-     * @param string     $message
-     * @param int        $code
-     * @param \Throwable $previous
+     * @param string          $message
+     * @param int             $code
+     * @param \Throwable|null $previous
      */
     public function __construct($message = 'Access denied', $code = 403, Throwable $previous = null)
     {

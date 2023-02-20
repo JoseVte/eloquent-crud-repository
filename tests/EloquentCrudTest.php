@@ -389,121 +389,121 @@ final class EloquentCrudTest extends TestCase
     public function testPaginate(): void
     {
         $paginationData = $this->repositoryWithSoftDelete->paginate($this->modelWithSoftDelete->where('id', 1), 1, 3);
-        $this->assertObjectHasAttribute('result', $paginationData);
+        self::assertObjectHasAttribute('result', $paginationData);
         $this->assertCount(0, $paginationData->result);
-        $this->assertObjectHasAttribute('total', $paginationData);
+        self::assertObjectHasAttribute('total', $paginationData);
         $this->assertEquals(1, $paginationData->total);
-        $this->assertObjectHasAttribute('page', $paginationData);
+        self::assertObjectHasAttribute('page', $paginationData);
         $this->assertEquals(1, $paginationData->page);
-        $this->assertObjectHasAttribute('pages', $paginationData);
+        self::assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(1, $paginationData->pages);
 
         $paginationData = $this->repository->paginate($this->model->where('id', 1), 1, 3);
-        $this->assertObjectHasAttribute('result', $paginationData);
+        self::assertObjectHasAttribute('result', $paginationData);
         $this->assertCount(0, $paginationData->result);
-        $this->assertObjectHasAttribute('total', $paginationData);
+        self::assertObjectHasAttribute('total', $paginationData);
         $this->assertEquals(1, $paginationData->total);
-        $this->assertObjectHasAttribute('page', $paginationData);
+        self::assertObjectHasAttribute('page', $paginationData);
         $this->assertEquals(1, $paginationData->page);
-        $this->assertObjectHasAttribute('pages', $paginationData);
+        self::assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(1, $paginationData->pages);
     }
 
     public function testPaginateCollection(): void
     {
         $paginationData = $this->repositoryWithSoftDelete->paginateCollection($this->repositoryWithSoftDelete->allWithTrashed(), 1, 3);
-        $this->assertObjectHasAttribute('result', $paginationData);
+        self::assertObjectHasAttribute('result', $paginationData);
         $this->assertCount(2, $paginationData->result);
-        $this->assertObjectHasAttribute('total', $paginationData);
+        self::assertObjectHasAttribute('total', $paginationData);
         $this->assertEquals(5, $paginationData->total);
-        $this->assertObjectHasAttribute('page', $paginationData);
+        self::assertObjectHasAttribute('page', $paginationData);
         $this->assertEquals(1, $paginationData->page);
-        $this->assertObjectHasAttribute('pages', $paginationData);
+        self::assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(2, $paginationData->pages);
 
         $paginationData = $this->repository->paginateCollection($this->repository->allWithTrashed(), 1, 3);
-        $this->assertObjectHasAttribute('result', $paginationData);
+        self::assertObjectHasAttribute('result', $paginationData);
         $this->assertCount(0, $paginationData->result);
-        $this->assertObjectHasAttribute('total', $paginationData);
+        self::assertObjectHasAttribute('total', $paginationData);
         $this->assertEquals(2, $paginationData->total);
-        $this->assertObjectHasAttribute('page', $paginationData);
+        self::assertObjectHasAttribute('page', $paginationData);
         $this->assertEquals(1, $paginationData->page);
-        $this->assertObjectHasAttribute('pages', $paginationData);
+        self::assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(1, $paginationData->pages);
     }
 
     public function testPagination(): void
     {
         $paginationData = $this->repositoryWithSoftDelete->pagination(1, 3);
-        $this->assertObjectHasAttribute('result', $paginationData);
+        self::assertObjectHasAttribute('result', $paginationData);
         $this->assertCount(0, $paginationData->result);
-        $this->assertObjectHasAttribute('total', $paginationData);
+        self::assertObjectHasAttribute('total', $paginationData);
         $this->assertEquals(2, $paginationData->total);
-        $this->assertObjectHasAttribute('page', $paginationData);
+        self::assertObjectHasAttribute('page', $paginationData);
         $this->assertEquals(1, $paginationData->page);
-        $this->assertObjectHasAttribute('pages', $paginationData);
+        self::assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(1, $paginationData->pages);
 
         $paginationData = $this->repository->pagination(1, 3);
-        $this->assertObjectHasAttribute('result', $paginationData);
+        self::assertObjectHasAttribute('result', $paginationData);
         $this->assertCount(0, $paginationData->result);
-        $this->assertObjectHasAttribute('total', $paginationData);
+        self::assertObjectHasAttribute('total', $paginationData);
         $this->assertEquals(2, $paginationData->total);
-        $this->assertObjectHasAttribute('page', $paginationData);
+        self::assertObjectHasAttribute('page', $paginationData);
         $this->assertEquals(1, $paginationData->page);
-        $this->assertObjectHasAttribute('pages', $paginationData);
+        self::assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(1, $paginationData->pages);
     }
 
     public function testPaginationWithTrashed(): void
     {
         $paginationData = $this->repositoryWithSoftDelete->paginationWithTrashed(1, 3);
-        $this->assertObjectHasAttribute('result', $paginationData);
+        self::assertObjectHasAttribute('result', $paginationData);
         $this->assertCount(2, $paginationData->result);
-        $this->assertObjectHasAttribute('total', $paginationData);
+        self::assertObjectHasAttribute('total', $paginationData);
         $this->assertEquals(5, $paginationData->total);
-        $this->assertObjectHasAttribute('page', $paginationData);
+        self::assertObjectHasAttribute('page', $paginationData);
         $this->assertEquals(1, $paginationData->page);
-        $this->assertObjectHasAttribute('pages', $paginationData);
+        self::assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(2, $paginationData->pages);
 
         $paginationData = $this->repository->paginationWithTrashed(1, 3);
-        $this->assertObjectHasAttribute('result', $paginationData);
+        self::assertObjectHasAttribute('result', $paginationData);
         $this->assertCount(0, $paginationData->result);
-        $this->assertObjectHasAttribute('total', $paginationData);
+        self::assertObjectHasAttribute('total', $paginationData);
         $this->assertEquals(2, $paginationData->total);
-        $this->assertObjectHasAttribute('page', $paginationData);
+        self::assertObjectHasAttribute('page', $paginationData);
         $this->assertEquals(1, $paginationData->page);
-        $this->assertObjectHasAttribute('pages', $paginationData);
+        self::assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(1, $paginationData->pages);
     }
 
     public function testPaginationOnlyTrashed(): void
     {
         $paginationData = $this->repositoryWithSoftDelete->paginationOnlyTrashed(1, 3);
-        $this->assertObjectHasAttribute('result', $paginationData);
+        self::assertObjectHasAttribute('result', $paginationData);
         $this->assertCount(0, $paginationData->result);
-        $this->assertObjectHasAttribute('total', $paginationData);
+        self::assertObjectHasAttribute('total', $paginationData);
         $this->assertEquals(3, $paginationData->total);
-        $this->assertObjectHasAttribute('page', $paginationData);
+        self::assertObjectHasAttribute('page', $paginationData);
         $this->assertEquals(1, $paginationData->page);
-        $this->assertObjectHasAttribute('pages', $paginationData);
+        self::assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(1, $paginationData->pages);
 
         $paginationData = $this->repository->paginationOnlyTrashed(1, 3);
-        $this->assertObjectHasAttribute('result', $paginationData);
+        self::assertObjectHasAttribute('result', $paginationData);
         $this->assertCount(0, $paginationData->result);
-        $this->assertObjectHasAttribute('total', $paginationData);
+        self::assertObjectHasAttribute('total', $paginationData);
         $this->assertEquals(0, $paginationData->total);
-        $this->assertObjectHasAttribute('page', $paginationData);
+        self::assertObjectHasAttribute('page', $paginationData);
         $this->assertEquals(1, $paginationData->page);
-        $this->assertObjectHasAttribute('pages', $paginationData);
+        self::assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(0, $paginationData->pages);
     }
 
-    private function assertObjectHasAttribute(string $property, $paginationData): void
+    public static function assertObjectHasAttribute(string $attributeName, $object, string $message = ''): void
     {
-        $this->assertIsObject($paginationData);
-        $this->assertTrue(property_exists($paginationData, $property));
+        self::assertIsObject($object);
+        self::assertTrue(property_exists($object, $attributeName));
     }
 }

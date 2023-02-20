@@ -1,6 +1,6 @@
 # Eloquent CRUD Repository
 
-[![Build Status](https://travis-ci.com/JoseVte/eloquent-crud-repository.svg?branch=master)](https://travis-ci.com/JoseVte/eloquent-crud-repository)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/JoseVte/eloquent-crud-repository/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/JoseVte/eloquent-crud-repository/tree/master)
 [![Latest Stable Version](http://poser.pugx.org/josrom/eloquent-crud-repository/v)](https://packagist.org/packages/josrom/eloquent-crud-repository)
 [![Total Downloads](http://poser.pugx.org/josrom/eloquent-crud-repository/downloads)](https://packagist.org/packages/josrom/eloquent-crud-repository)
 [![License](http://poser.pugx.org/josrom/eloquent-crud-repository/license)](https://packagist.org/packages/josrom/eloquent-crud-repository)
