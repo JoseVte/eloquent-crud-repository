@@ -220,7 +220,8 @@ interface CrudRepository
      * @param int                                                                     $page       Page to show
      * @param int                                                                     $limit      Items per page
      *
-     * @return object Json with the result
+     * @return object{result: Collection, total: int, page: int, pages: int}
+     *              Json with the result
      *                - result: Array with the result
      *                - total: Total of items
      *                - page:   Current page
@@ -234,7 +235,8 @@ interface CrudRepository
      * @param int $page  Page to show
      * @param int $limit Items per page
      *
-     * @return object Json with the result
+     * @return object{result: Collection, total: int, page: int, pages: int}
+     *              Json with the result
      *                - result: Array with the result
      *                - total: Total of items
      *                - page:   Current page
@@ -248,7 +250,8 @@ interface CrudRepository
      * @param int $page  Page to show
      * @param int $limit Items per page
      *
-     * @return object Json with the result
+     * @return object{result: Collection, total: int, page: int, pages: int}
+     *              Json with the result
      *                - result: Array with the result
      *                - total: Total of items
      *                - page:   Current page
@@ -262,7 +265,8 @@ interface CrudRepository
      * @param int $page  Page to show
      * @param int $limit Items per page
      *
-     * @return object Json with the result
+     * @return object{result: Collection, total: int, page: int, pages: int}
+     *              Json with the result
      *                - result: Array with the result
      *                - total: Total of items
      *                - page:   Current page

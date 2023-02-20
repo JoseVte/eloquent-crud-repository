@@ -78,7 +78,7 @@ class CrudRepository implements CrudRepositoryContract
             return $this->model()->onlyTrashed()->with($with)->get();
         }
 
-        return collect([]);
+        return collect();
     }
 
     /**
@@ -386,7 +386,6 @@ class CrudRepository implements CrudRepositoryContract
      */
     public function paginate($query, int $page = 0, int $limit = 15) : object
     {
-        $page = (int) $page;
         $count = $query->count();
         $pages = ceil($count / $limit);
 
@@ -407,7 +406,8 @@ class CrudRepository implements CrudRepositoryContract
      * @param int                                                                     $page       Page to show
      * @param int                                                                     $limit      Items per page
      *
-     * @return object Json with the result
+     * @return object{result: Collection, total: int, page: int, pages: int}
+     *              Json with the result
      *                - result: Array with the result
      *                - total: Total of items
      *                - page:   Current page
@@ -415,7 +415,6 @@ class CrudRepository implements CrudRepositoryContract
      */
     public function paginateCollection(Collection $collection, int $page = 0, int $limit = 15) : object
     {
-        $page = (int) $page;
         $count = $collection->count();
         $pages = ceil($count / $limit);
 
@@ -435,7 +434,8 @@ class CrudRepository implements CrudRepositoryContract
      * @param int $page  Page to show
      * @param int $limit Items per page
      *
-     * @return object Json with the result
+     * @return object{result: Collection, total: int, page: int, pages: int}
+     *              Json with the result
      *                - result: Array with the result
      *                - total: Total of items
      *                - page:   Current page
@@ -452,7 +452,8 @@ class CrudRepository implements CrudRepositoryContract
      * @param int $page  Page to show
      * @param int $limit Items per page
      *
-     * @return object Json with the result
+     * @return object{result: Collection, total: int, page: int, pages: int}
+     *              Json with the result
      *                - result: Array with the result
      *                - total: Total of items
      *                - page:   Current page
@@ -475,7 +476,8 @@ class CrudRepository implements CrudRepositoryContract
      * @param int $page  Page to show
      * @param int $limit Items per page
      *
-     * @return object Json with the result
+     * @return object{result: Collection, total: int, page: int, pages: int}
+     *              Json with the result
      *                - result: Array with the result
      *                - total: Total of items
      *                - page:   Current page
