@@ -110,6 +110,9 @@ jobs:
           paths:
             - ./vendor
       - run:
+          name: "Migrate XML"
+          command: vendor/bin/phpunit --migrate-configuration
+      - run:
           name: "Run Tests"
           command: vendor/bin/phpunit --testdox
 
