@@ -25,25 +25,20 @@ final class EloquentCrudTest extends TestCase
     private $repository, $repositoryWithSoftDelete;
 
     /**
-     * @var \TestDatabase
-     */
-    private $database;
-
-    /**
      * @throws \Exception
      */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->database = new TestDatabase();
+        $database = new TestDatabase();
         $this->model = new TestModel();
         $this->modelWithSoftDelete = new TestModelWithSoftDelete();
         $this->repository = new CrudRepository($this->model);
         $this->repositoryWithSoftDelete = new CrudRepository($this->modelWithSoftDelete);
 
-        $this->database->createTables();
-        $this->database->insertModels();
+        $database->createTables();
+        $database->insertModels();
     }
 
     public function testAllModels(): void
@@ -504,5 +499,11 @@ final class EloquentCrudTest extends TestCase
         $this->assertEquals(1, $paginationData->page);
         $this->assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(0, $paginationData->pages);
+    }
+
+    private function assertObjectHasAttribute(string $property, $paginationData): void
+    {
+        $this->assertIsObject($paginationData);
+        $this->assertTrue(property_exists($paginationData, $property));
     }
 }

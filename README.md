@@ -7,7 +7,7 @@
 
 ### Introduction
 
-EloquentCrudRepository provides a well tested and complete base to create more model repositories using the repository pattern with Eloquent as ORM .
+EloquentCrudRepository provides a well tested and complete base to create more model repositories using the repository pattern with Eloquent as ORM.
 
 ## Public methods available
 
@@ -64,7 +64,7 @@ Instead, you may of course manually update your require block and run composer u
 ```json
 {
     "require": {
-        "josrom/eloquent-crud-repository": "^4.0"
+        "josrom/eloquent-crud-repository": "^10.0"
     }
 }
 ```
