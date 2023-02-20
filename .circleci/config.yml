@@ -111,7 +111,7 @@ jobs:
             - ./vendor
       - run:
           name: "Run Tests"
-          command: vendor/bin/phpunit --verbose --testdox
+          command: vendor/bin/phpunit --testdox
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
