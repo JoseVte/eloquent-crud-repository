@@ -242,7 +242,7 @@ interface CrudRepository
      *                - page:   Current page
      *                - pages: Total of pages
      */
-    public function pagination(int $page = 0, int $limit = 15);
+    public function pagination(int $page = 0, int $limit = 15): object;
 
     /**
      * Gets the model paginated with trashed models.

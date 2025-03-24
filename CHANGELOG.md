@@ -1,8 +1,14 @@
 # Changelog
 
+## [11.0.0](https://github.com/JoseVte/eloquent-crud-repository/tree/11.0.0) (2025-03-24)
+
+### Implemented enhancements:
+
+* :arrow_double_up: Allow Laravel 11
+
 ## [9.0.0/10.0.0](https://github.com/JoseVte/eloquent-crud-repository/tree/10.0.0) (2021-06-19)
 
-[Full Changelog](https://github.com/JoseVte/eloquent-crud-repository/compare/8.0.0...10.0.0)
+[Full Changelog](https://github.com/JoseVte/eloquent-crud-repository/compare/8.0.0...11.0.0)
 
 ### Implemented enhancements:
 

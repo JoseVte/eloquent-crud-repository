@@ -116,6 +116,66 @@ jobs:
           name: "Run Tests"
           command: vendor/bin/phpunit --testdox
 
+  test8-2:
+    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+    docker:
+      - image: cimg/php:8.2
+    # Add steps to the job
+    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            # "composer.lock" can be used if it is committed to the repo
+            - 8.2-dependencies-{{ checksum "composer.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - 8.2-dependencies-
+      - run:
+          name: "Install Dependencies"
+          command: composer install --no-interaction --prefer-source
+      - save_cache:
+          key: 8.2-dependencies-{{ checksum "composer.json" }}
+          paths:
+            - ./vendor
+      - run:
+          name: "Migrate XML"
+          command: vendor/bin/phpunit --migrate-configuration
+      - run:
+          name: "Run Tests"
+          command: vendor/bin/phpunit --testdox
+
+  test8-3:
+    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+    docker:
+      - image: cimg/php:8.3
+    # Add steps to the job
+    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            # "composer.lock" can be used if it is committed to the repo
+            - 8.3-dependencies-{{ checksum "composer.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - 8.3-dependencies-
+      - run:
+          name: "Install Dependencies"
+          command: composer install --no-interaction --prefer-source
+      - save_cache:
+          key: 8.3-dependencies-{{ checksum "composer.json" }}
+          paths:
+            - ./vendor
+      - run:
+          name: "Migrate XML"
+          command: vendor/bin/phpunit --migrate-configuration
+      - run:
+          name: "Run Tests"
+          command: vendor/bin/phpunit --testdox
+
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
@@ -125,4 +185,6 @@ workflows:
       - test7-4
       - test8-0
       - test8-1
+      - test8-2
+      - test8-3
 
