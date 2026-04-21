@@ -41,12 +41,12 @@ EloquentCrudRepository provides a well tested and complete base to create more m
 
 |Name|Parameters|Return|
 |----|----------|------|
-|checkCanShow|\Illuminate\Database\Eloquent\Model $model|void|
+|checkCanShow|?\Illuminate\Database\Eloquent\Model $model|void|
 |checkCanCreate|array $params|void|
 |checkCanUpdate|\Illuminate\Database\Eloquent\Model $model, array $newValues|void|
 |checkCanDelete|\Illuminate\Database\Eloquent\Model $model|void|
 |checkCanRestore|\Illuminate\Database\Eloquent\Model $model|void|
-|canShow|\Illuminate\Database\Eloquent\Model $model|bool|
+|canShow|?\Illuminate\Database\Eloquent\Model $model|bool|
 |canCreate|array $params|bool|
 |canUpdate|\Illuminate\Database\Eloquent\Model $model, array $newValues|bool|
 |canDelete|\Illuminate\Database\Eloquent\Model $model|bool|

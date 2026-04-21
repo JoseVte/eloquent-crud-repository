@@ -10,19 +10,19 @@ class AccessDeniedException extends Exception
     /**
      * @var array
      */
-    private $arguments;
+    private array $arguments;
 
     /**
      * AccessDeniedException constructor.
      *
-     * @param string     $message
-     * @param int        $code
-     * @param \Throwable $previous
+     * @param string         $message
+     * @param int            $code
+     * @param Throwable|null $previous
      */
     public function __construct($message = 'Access denied', $code = 403, Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
-        $this->arguments = func_get_args();
+        $this->arguments = \func_get_args();
     }
 
     /**
@@ -42,6 +42,6 @@ class AccessDeniedException extends Exception
      */
     public function countArguments(): int
     {
-        return count($this->arguments);
+        return \count($this->arguments);
     }
 }
