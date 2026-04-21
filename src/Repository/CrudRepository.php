@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 interface CrudRepository
 {
     /**
-     * Return the model to allow create custom queries
+     * Return the model to allow create custom queries.
      *
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\SoftDeletes
      */
@@ -47,9 +47,9 @@ interface CrudRepository
      * @param mixed $id
      * @param array $with
      *
-     * @return \Illuminate\Database\Eloquent\Model
-     *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     *
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function find(int $id, array $with = []) : Model;
 
@@ -59,9 +59,9 @@ interface CrudRepository
      * @param int   $id
      * @param array $with
      *
-     * @return \Illuminate\Database\Eloquent\Model
-     *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     *
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function findWithTrashed(int $id, array $with = []) : Model;
 
@@ -71,9 +71,9 @@ interface CrudRepository
      * @param int   $id
      * @param array $with
      *
-     * @return \Illuminate\Database\Eloquent\Model
-     *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     *
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function findTrashed(int $id, array $with = []) : Model;
 
@@ -86,9 +86,9 @@ interface CrudRepository
      * @param bool   $strict
      * @param array  $with
      *
-     * @return \Illuminate\Database\Eloquent\Model|null|static
-     *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null|static
      */
     public function findBy(string $field, $value, string $comparison = '=', bool $strict = true, array $with = []) : ?Model;
 
@@ -101,9 +101,9 @@ interface CrudRepository
      * @param bool   $strict
      * @param array  $with
      *
-     * @return \Illuminate\Database\Eloquent\Model|null|static
-     *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null|static
      */
     public function findByWithTrashed(string $field, $value, string $comparison = '=', bool $strict = true, array $with = []) : ?Model;
 
@@ -116,9 +116,9 @@ interface CrudRepository
      * @param bool   $strict
      * @param array  $with
      *
-     * @return \Illuminate\Database\Eloquent\Model|null|static
-     *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null|static
      */
     public function findByTrashed(string $field, $value, string $comparison = '=', bool $strict = true, array $with = []) : ?Model;
 
@@ -145,9 +145,9 @@ interface CrudRepository
      *
      * @param array $params The model fields
      *
-     * @return \Illuminate\Database\Eloquent\Model
-     *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     *
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function create(array $params): Model;
 
@@ -157,9 +157,9 @@ interface CrudRepository
      * @param int   $id     The model's ID
      * @param array $params The model fields
      *
-     * @return \Illuminate\Database\Eloquent\Model
-     *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     *
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function update(int $id, array $params): Model;
 
@@ -168,10 +168,10 @@ interface CrudRepository
      *
      * @param int $id The model's ID
      *
-     * @return bool
-     *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(int $id): bool;
 
@@ -180,10 +180,10 @@ interface CrudRepository
      *
      * @param int $id The model's ID
      *
-     * @return bool
-     *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
      * @throws \Exception
+     *
+     * @return bool
      */
     public function forceDelete(int $id): bool;
 
@@ -192,9 +192,9 @@ interface CrudRepository
      *
      * @param int $id The model's ID
      *
-     * @return bool
-     *
      * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     *
+     * @return bool
      */
     public function restore(int $id): bool;
 

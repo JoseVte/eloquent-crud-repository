@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.0.1](https://github.com/JoseVte/eloquent-crud-repository/tree/4.0.1) (2026-04-21)
+
+[Full Changelog](https://github.com/JoseVte/eloquent-crud-repository/compare/4.0.0...4.0.1)
+
+### Implemented enhancements:
+
+* :wrench: Added PHP CS Fixer (`^3.0`) as a dev dependency with project configuration
+* :art: Applied code style improvements across the codebase
+
+### Fixed bugs:
+
+* :bug: Fixed deprecated `assertObjectHasAttribute` usage in tests
+
 ## [4.0.0](https://github.com/JoseVte/eloquent-crud-repository/tree/4.0.0) (2021-06-19)
 
 [Full Changelog](https://github.com/JoseVte/eloquent-crud-repository/compare/3.0.0...4.0.0)

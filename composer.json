@@ -5,7 +5,7 @@
     "keywords": ["repository-pattern", "eloquent", "orm", "laravel"],
     "license": "MIT",
     "type": "library",
-    "version": "4.0.0",
+    "version": "4.0.1",
     "authors": [
         {
             "name": "Jose Vicente Orts Romero",
@@ -29,6 +29,7 @@
         "illuminate/database": "^8.0"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.0",
         "phpunit/phpunit": "^9.0"
     }
 }
