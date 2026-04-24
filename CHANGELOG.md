@@ -1,5 +1,17 @@
 # Changelog
 
+## [12.0.1](https://github.com/JoseVte/eloquent-crud-repository/tree/12.0.1) (2026-04-24)
+
+[Full Changelog](https://github.com/JoseVte/eloquent-crud-repository/compare/12.0.0...12.0.1)
+
+### Implemented enhancements:
+
+* :sparkles: Add `@template TModel of Model` generics to interface and implementation for IDE and static-analysis autocomplete
+* :memo: Add Usage section to README with subclass, access control, and SoftDeletes examples
+* :white_check_mark: Achieve 100% test coverage — add access-denied, non-strict findBy, and formatModel select tests
+* :bug: Remove unreachable dead code in `findByTrashed` (`if ($strict && $model === null)` after `firstOrFail`)
+* :construction_worker: Update CI to drop PHP < 8.2 jobs, add PHP 8.4, remove obsolete migration step
+
 ## [12.0.0](https://github.com/JoseVte/eloquent-crud-repository/tree/12.0.0) (2026-04-24)
 
 [Full Changelog](https://github.com/JoseVte/eloquent-crud-repository/compare/11.0.1...12.0.0)
@@ -7,10 +19,6 @@
 ### Implemented enhancements:
 
 * :arrow_double_up: Updated minimum requirements to Laravel 12 and PHP 8.2
-* :sparkles: Add `@template TModel of Model` generics to interface and implementation for IDE and static-analysis autocomplete
-* :memo: Add Usage section to README with subclass, access control, and SoftDeletes examples
-* :white_check_mark: Achieve 100% test coverage — add access-denied, non-strict findBy, and formatModel select tests
-* :bug: Remove unreachable dead code in `findByTrashed` (`if ($strict && $model === null)` after `firstOrFail`)
 
 ## [11.0.1](https://github.com/JoseVte/eloquent-crud-repository/tree/11.0.1) (2026-04-24)
 
