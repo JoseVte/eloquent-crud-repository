@@ -5,27 +5,6 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  test8-2:
-    docker:
-      - image: cimg/php:8.2
-    steps:
-      - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - 8.2-dependencies-{{ checksum "composer.json" }}
-            - 8.2-dependencies-
-      - run:
-          name: "Install Dependencies"
-          command: composer install --no-interaction --prefer-source
-      - save_cache:
-          key: 8.2-dependencies-{{ checksum "composer.json" }}
-          paths:
-            - ./vendor
-      - run:
-          name: "Run Tests"
-          command: vendor/bin/phpunit --testdox
-
   test8-3:
     docker:
       - image: cimg/php:8.3
@@ -68,41 +47,10 @@ jobs:
           name: "Run Tests"
           command: vendor/bin/phpunit --testdox
 
-  test8-4:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/php:8.4
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
-    steps:
-      - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            # "composer.lock" can be used if it is committed to the repo
-            - 8.4-dependencies-{{ checksum "composer.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - 8.4-dependencies-
-      - run:
-          name: "Install Dependencies"
-          command: composer install --no-interaction --prefer-source
-      - save_cache:
-          key: 8.4-dependencies-{{ checksum "composer.json" }}
-          paths:
-            - ./vendor
-      - run:
-          name: "Migrate XML"
-          command: vendor/bin/phpunit --migrate-configuration
-      - run:
-          name: "Run Tests"
-          command: vendor/bin/phpunit --testdox
-
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   tests_versions:
     jobs:
-      - test8-2
       - test8-3
       - test8-4

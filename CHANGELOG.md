@@ -1,5 +1,13 @@
 # Changelog
 
+## [13.0.0](https://github.com/JoseVte/eloquent-crud-repository/tree/13.0.0) (2026-04-24)
+
+[Full Changelog](https://github.com/JoseVte/eloquent-crud-repository/compare/12.0.1...13.0.0)
+
+### Implemented enhancements:
+
+* :arrow_double_up: Updated minimum requirements to Laravel 13 and PHP 8.3
+
 ## [12.0.1](https://github.com/JoseVte/eloquent-crud-repository/tree/12.0.1) (2026-04-24)
 
 [Full Changelog](https://github.com/JoseVte/eloquent-crud-repository/compare/12.0.0...12.0.1)
