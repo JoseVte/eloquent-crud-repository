@@ -38,17 +38,91 @@ EloquentCrudRepository provides a well tested and complete base to create more m
 
 |Name|Parameters|Return|
 |----|----------|------|
-|checkCanShow|\Illuminate\Database\Eloquent\Model $model|void|
+|checkCanShow|?\Illuminate\Database\Eloquent\Model $model|void|
 |checkCanCreate|array $params|void|
 |checkCanUpdate|\Illuminate\Database\Eloquent\Model $model, array $newValues|void|
 |checkCanDelete|\Illuminate\Database\Eloquent\Model $model|void|
 |checkCanRestore|\Illuminate\Database\Eloquent\Model $model|void|
-|canShow|\Illuminate\Database\Eloquent\Model $model|bool|
+|canShow|?\Illuminate\Database\Eloquent\Model $model|bool|
 |canCreate|array $params|bool|
 |canUpdate|\Illuminate\Database\Eloquent\Model $model, array $newValues|bool|
 |canDelete|\Illuminate\Database\Eloquent\Model $model|bool|
 |canRestore|\Illuminate\Database\Eloquent\Model $model|bool|
 |hasSoftDeletes| |bool|
+
+## Usage
+
+### Basic repository
+
+Extend `CrudRepository` and inject your Eloquent model. Annotate with `@extends CrudRepository<YourModel>` so that IDEs and static analysis tools (PHPStan, Psalm) can infer the concrete model type on every return value:
+
+```php
+use Eloquent\Crud\Repository\Eloquent\CrudRepository;
+
+/**
+ * @extends CrudRepository<User>
+ */
+class UserRepository extends CrudRepository
+{
+    public function __construct()
+    {
+        parent::__construct(new User());
+    }
+}
+```
+
+With that annotation in place, `find()`, `create()`, `update()`, `all()`, etc. all resolve to `User` (or `Collection<int, User>`) in your IDE instead of the base `Model`.
+
+### Access control
+
+Override any `can*` method to restrict access. The corresponding `checkCan*` guard calls it and throws `AccessDeniedException` (HTTP 403) on denial:
+
+```php
+/**
+ * @extends CrudRepository<Post>
+ */
+class PostRepository extends CrudRepository
+{
+    public function __construct()
+    {
+        parent::__construct(new Post());
+    }
+
+    protected function canUpdate(Model $model, array $newValues): bool
+    {
+        return Auth::id() === $model->user_id;
+    }
+
+    protected function canDelete(Model $model): bool
+    {
+        return Auth::user()->isAdmin();
+    }
+}
+```
+
+### SoftDeletes
+
+If your model uses the `SoftDeletes` trait, the `WithTrashed` and `OnlyTrashed` variants are automatically available:
+
+```php
+/**
+ * @extends CrudRepository<Post>
+ */
+class PostRepository extends CrudRepository
+{
+    public function __construct()
+    {
+        parent::__construct(new Post()); // Post uses SoftDeletes
+    }
+}
+
+$repo->allWithTrashed();          // active + soft-deleted
+$repo->allTrashed();              // only soft-deleted
+$repo->findWithTrashed($id);
+$repo->findTrashed($id);
+$repo->forceDelete($id);
+$repo->restore($id);
+```
 
 ## Installation
 
@@ -64,7 +138,7 @@ Instead, you may of course manually update your require block and run composer u
 ```json
 {
     "require": {
-        "josrom/eloquent-crud-repository": "^10.0"
+        "josrom/eloquent-crud-repository": "^12.0"
     }
 }
 ```
