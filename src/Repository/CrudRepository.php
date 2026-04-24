@@ -2,20 +2,24 @@
 
 namespace Eloquent\Crud\Repository;
 
+use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Eloquent\Crud\Exception\AccessDeniedException;
 
 interface CrudRepository
 {
     /**
-     * Return the model to allow create custom queries
+     * Return the model to allow creating custom queries.
      *
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\SoftDeletes
+     * @return Model|SoftDeletes
      */
     public function model(): Model;
 
     /**
-     * All the models. If the model uses SoftDeletes, use the other methods to obtain all the models: allWithTrashed, allTrashed.
+     * All the models. If the model uses SoftDeletes, use the other methods to get all the models: allWithTrashed, allTrashed.
      *
      * @param array $with
      *
@@ -37,7 +41,7 @@ interface CrudRepository
      *
      * @param array $with
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function allTrashed(array $with = []): Collection;
 
@@ -47,9 +51,9 @@ interface CrudRepository
      * @param mixed $id
      * @param array $with
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @throws AccessDeniedException
      *
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @return Model
      */
     public function find(int $id, array $with = []) : Model;
 
@@ -59,9 +63,9 @@ interface CrudRepository
      * @param int   $id
      * @param array $with
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @throws AccessDeniedException
      *
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @return Model
      */
     public function findWithTrashed(int $id, array $with = []) : Model;
 
@@ -71,9 +75,9 @@ interface CrudRepository
      * @param int   $id
      * @param array $with
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @throws AccessDeniedException
      *
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @return Model
      */
     public function findTrashed(int $id, array $with = []) : Model;
 
@@ -86,9 +90,9 @@ interface CrudRepository
      * @param bool   $strict
      * @param array  $with
      *
-     * @return \Illuminate\Database\Eloquent\Model|null|static
+     * @throws AccessDeniedException
      *
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @return Model|null|static
      */
     public function findBy(string $field, $value, string $comparison = '=', bool $strict = true, array $with = []) : ?Model;
 
@@ -101,9 +105,9 @@ interface CrudRepository
      * @param bool   $strict
      * @param array  $with
      *
-     * @return \Illuminate\Database\Eloquent\Model|null|static
+     * @throws AccessDeniedException
      *
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @return Model|null|static
      */
     public function findByWithTrashed(string $field, $value, string $comparison = '=', bool $strict = true, array $with = []) : ?Model;
 
@@ -116,9 +120,9 @@ interface CrudRepository
      * @param bool   $strict
      * @param array  $with
      *
-     * @return \Illuminate\Database\Eloquent\Model|null|static
+     * @throws AccessDeniedException
      *
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @return Model|null|static
      */
     public function findByTrashed(string $field, $value, string $comparison = '=', bool $strict = true, array $with = []) : ?Model;
 
@@ -127,14 +131,14 @@ interface CrudRepository
      *
      * @param array $params
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return Model
      */
     public function newModel(array $params = []): Model;
 
     /**
      * Formats the model to use in APIs.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param Model $model
      *
      * @return array
      */
@@ -145,9 +149,9 @@ interface CrudRepository
      *
      * @param array $params The model fields
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @throws AccessDeniedException
      *
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @return Model
      */
     public function create(array $params): Model;
 
@@ -157,9 +161,9 @@ interface CrudRepository
      * @param int   $id     The model's ID
      * @param array $params The model fields
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @throws AccessDeniedException
      *
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @return Model
      */
     public function update(int $id, array $params): Model;
 
@@ -168,10 +172,10 @@ interface CrudRepository
      *
      * @param int $id The model's ID
      *
-     * @return bool
+     * @throws AccessDeniedException
+     * @throws Exception
      *
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
-     * @throws \Exception
+     * @return bool
      */
     public function delete(int $id): bool;
 
@@ -180,10 +184,10 @@ interface CrudRepository
      *
      * @param int $id The model's ID
      *
-     * @return bool
+     * @throws AccessDeniedException
+     * @throws Exception
      *
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
-     * @throws \Exception
+     * @return bool
      */
     public function forceDelete(int $id): bool;
 
@@ -192,18 +196,18 @@ interface CrudRepository
      *
      * @param int $id The model's ID
      *
-     * @return bool
+     * @throws AccessDeniedException
      *
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @return bool
      */
     public function restore(int $id): bool;
 
     /**
      * Paginates a query.
      *
-     * @param \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder $query Query
-     * @param int                                                                      $page  Page to show
-     * @param int                                                                      $limit Items per page
+     * @param \Illuminate\Database\Query\Builder|Builder $query Query
+     * @param int                                        $page  Page to show
+     * @param int                                        $limit Items per page
      *
      * @return object Json with the result
      *                - result: Array with the result
@@ -216,16 +220,16 @@ interface CrudRepository
     /**
      * Paginates a collection.
      *
-     * @param \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection $collection Collection
-     * @param int                                                                     $page       Page to show
-     * @param int                                                                     $limit      Items per page
+     * @param \Illuminate\Database\Eloquent\Collection|Collection $collection Collection
+     * @param int                                                 $page       Page to show
+     * @param int                                                 $limit      Items per page
      *
      * @return object{result: Collection, total: int, page: int, pages: int}
-     *              Json with the result
-     *                - result: Array with the result
-     *                - total: Total of items
-     *                - page:   Current page
-     *                - pages: Total of pages
+     *                                                                       Json with the result
+     *                                                                       - result: Array with the result
+     *                                                                       - total: Total of items
+     *                                                                       - page:   Current page
+     *                                                                       - pages: Total of pages
      */
     public function paginateCollection(Collection $collection, int $page = 0, int $limit = 15) : object;
 
@@ -236,11 +240,11 @@ interface CrudRepository
      * @param int $limit Items per page
      *
      * @return object{result: Collection, total: int, page: int, pages: int}
-     *              Json with the result
-     *                - result: Array with the result
-     *                - total: Total of items
-     *                - page:   Current page
-     *                - pages: Total of pages
+     *                                                                       Json with the result
+     *                                                                       - result: Array with the result
+     *                                                                       - total: Total of items
+     *                                                                       - page:   Current page
+     *                                                                       - pages: Total of pages
      */
     public function pagination(int $page = 0, int $limit = 15): object;
 
@@ -251,11 +255,11 @@ interface CrudRepository
      * @param int $limit Items per page
      *
      * @return object{result: Collection, total: int, page: int, pages: int}
-     *              Json with the result
-     *                - result: Array with the result
-     *                - total: Total of items
-     *                - page:   Current page
-     *                - pages: Total of pages
+     *                                                                       Json with the result
+     *                                                                       - result: Array with the result
+     *                                                                       - total: Total of items
+     *                                                                       - page:   Current page
+     *                                                                       - pages: Total of pages
      */
     public function paginationWithTrashed(int $page = 0, int $limit = 15) : object;
 
@@ -266,11 +270,11 @@ interface CrudRepository
      * @param int $limit Items per page
      *
      * @return object{result: Collection, total: int, page: int, pages: int}
-     *              Json with the result
-     *                - result: Array with the result
-     *                - total: Total of items
-     *                - page:   Current page
-     *                - pages: Total of pages
+     *                                                                       Json with the result
+     *                                                                       - result: Array with the result
+     *                                                                       - total: Total of items
+     *                                                                       - page:   Current page
+     *                                                                       - pages: Total of pages
      */
     public function paginationOnlyTrashed(int $page = 0, int $limit = 15) : object;
 }
