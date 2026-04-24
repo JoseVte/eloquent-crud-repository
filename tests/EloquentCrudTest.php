@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
+use Illuminate\Database\Eloquent\Builder;
+use Eloquent\Crud\Exception\AccessDeniedException;
 use Eloquent\Crud\Repository\Eloquent\CrudRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\MassAssignmentException;
@@ -10,22 +12,23 @@ use Illuminate\Database\Eloquent\MassAssignmentException;
 final class EloquentCrudTest extends TestCase
 {
     /**
-     * @var \TestModel|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder
+     * @var TestModel|\Illuminate\Database\Query\Builder|Builder
      */
     private $model;
 
     /**
-     * @var \TestModelWithSoftDelete|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder
+     * @var TestModelWithSoftDelete|\Illuminate\Database\Query\Builder|Builder
      */
     private $modelWithSoftDelete;
 
     /**
-     * @var \Eloquent\Crud\Repository\Eloquent\CrudRepository
+     * @var CrudRepository
      */
-    private $repository, $repositoryWithSoftDelete;
+    private CrudRepository $repository;
+    private CrudRepository $repositoryWithSoftDelete;
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     protected function setUp(): void
     {
@@ -60,7 +63,7 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testFindModel(): void
     {
@@ -82,7 +85,7 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testFindWithTrashedModel(): void
     {
@@ -99,7 +102,7 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testFindOnlyTrashedModel(): void
     {
@@ -118,7 +121,7 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testFindByModel(): void
     {
@@ -140,7 +143,7 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testFindByWithTrashedModel(): void
     {
@@ -157,7 +160,7 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testFindByOnlyTrashedModel(): void
     {
@@ -208,7 +211,7 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testFormatModel(): void
     {
@@ -222,7 +225,7 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testCreate(): void
     {
@@ -236,7 +239,7 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testCreateWithParams(): void
     {
@@ -250,7 +253,7 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testUpdate(): void
     {
@@ -266,7 +269,7 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testUpdateNotFound(): void
     {
@@ -284,8 +287,8 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
-     * @throws \Exception
+     * @throws AccessDeniedException
+     * @throws Exception
      */
     public function testDelete(): void
     {
@@ -297,8 +300,8 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
-     * @throws \Exception
+     * @throws AccessDeniedException
+     * @throws Exception
      */
     public function testDeleteNotFound(): void
     {
@@ -316,8 +319,8 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
-     * @throws \Exception
+     * @throws AccessDeniedException
+     * @throws Exception
      */
     public function testForceDelete(): void
     {
@@ -341,8 +344,8 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
-     * @throws \Exception
+     * @throws AccessDeniedException
+     * @throws Exception
      */
     public function testForceDeleteNotFound(): void
     {
@@ -360,8 +363,8 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
-     * @throws \Exception
+     * @throws AccessDeniedException
+     * @throws Exception
      */
     public function testRestore(): void
     {
@@ -372,8 +375,8 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
-     * @throws \Exception
+     * @throws AccessDeniedException
+     * @throws Exception
      */
     public function testRestoreNotFound(): void
     {
@@ -389,121 +392,75 @@ final class EloquentCrudTest extends TestCase
     public function testPaginate(): void
     {
         $paginationData = $this->repositoryWithSoftDelete->paginate($this->modelWithSoftDelete->where('id', 1), 1, 3);
-        self::assertObjectHasAttribute('result', $paginationData);
         $this->assertCount(0, $paginationData->result);
-        self::assertObjectHasAttribute('total', $paginationData);
         $this->assertEquals(1, $paginationData->total);
-        self::assertObjectHasAttribute('page', $paginationData);
         $this->assertEquals(1, $paginationData->page);
-        self::assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(1, $paginationData->pages);
 
         $paginationData = $this->repository->paginate($this->model->where('id', 1), 1, 3);
-        self::assertObjectHasAttribute('result', $paginationData);
         $this->assertCount(0, $paginationData->result);
-        self::assertObjectHasAttribute('total', $paginationData);
         $this->assertEquals(1, $paginationData->total);
-        self::assertObjectHasAttribute('page', $paginationData);
         $this->assertEquals(1, $paginationData->page);
-        self::assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(1, $paginationData->pages);
     }
 
     public function testPaginateCollection(): void
     {
         $paginationData = $this->repositoryWithSoftDelete->paginateCollection($this->repositoryWithSoftDelete->allWithTrashed(), 1, 3);
-        self::assertObjectHasAttribute('result', $paginationData);
         $this->assertCount(2, $paginationData->result);
-        self::assertObjectHasAttribute('total', $paginationData);
         $this->assertEquals(5, $paginationData->total);
-        self::assertObjectHasAttribute('page', $paginationData);
         $this->assertEquals(1, $paginationData->page);
-        self::assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(2, $paginationData->pages);
 
         $paginationData = $this->repository->paginateCollection($this->repository->allWithTrashed(), 1, 3);
-        self::assertObjectHasAttribute('result', $paginationData);
         $this->assertCount(0, $paginationData->result);
-        self::assertObjectHasAttribute('total', $paginationData);
         $this->assertEquals(2, $paginationData->total);
-        self::assertObjectHasAttribute('page', $paginationData);
         $this->assertEquals(1, $paginationData->page);
-        self::assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(1, $paginationData->pages);
     }
 
     public function testPagination(): void
     {
         $paginationData = $this->repositoryWithSoftDelete->pagination(1, 3);
-        self::assertObjectHasAttribute('result', $paginationData);
         $this->assertCount(0, $paginationData->result);
-        self::assertObjectHasAttribute('total', $paginationData);
         $this->assertEquals(2, $paginationData->total);
-        self::assertObjectHasAttribute('page', $paginationData);
         $this->assertEquals(1, $paginationData->page);
-        self::assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(1, $paginationData->pages);
 
         $paginationData = $this->repository->pagination(1, 3);
-        self::assertObjectHasAttribute('result', $paginationData);
         $this->assertCount(0, $paginationData->result);
-        self::assertObjectHasAttribute('total', $paginationData);
         $this->assertEquals(2, $paginationData->total);
-        self::assertObjectHasAttribute('page', $paginationData);
         $this->assertEquals(1, $paginationData->page);
-        self::assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(1, $paginationData->pages);
     }
 
     public function testPaginationWithTrashed(): void
     {
         $paginationData = $this->repositoryWithSoftDelete->paginationWithTrashed(1, 3);
-        self::assertObjectHasAttribute('result', $paginationData);
         $this->assertCount(2, $paginationData->result);
-        self::assertObjectHasAttribute('total', $paginationData);
         $this->assertEquals(5, $paginationData->total);
-        self::assertObjectHasAttribute('page', $paginationData);
         $this->assertEquals(1, $paginationData->page);
-        self::assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(2, $paginationData->pages);
 
         $paginationData = $this->repository->paginationWithTrashed(1, 3);
-        self::assertObjectHasAttribute('result', $paginationData);
         $this->assertCount(0, $paginationData->result);
-        self::assertObjectHasAttribute('total', $paginationData);
         $this->assertEquals(2, $paginationData->total);
-        self::assertObjectHasAttribute('page', $paginationData);
         $this->assertEquals(1, $paginationData->page);
-        self::assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(1, $paginationData->pages);
     }
 
     public function testPaginationOnlyTrashed(): void
     {
         $paginationData = $this->repositoryWithSoftDelete->paginationOnlyTrashed(1, 3);
-        self::assertObjectHasAttribute('result', $paginationData);
         $this->assertCount(0, $paginationData->result);
-        self::assertObjectHasAttribute('total', $paginationData);
         $this->assertEquals(3, $paginationData->total);
-        self::assertObjectHasAttribute('page', $paginationData);
         $this->assertEquals(1, $paginationData->page);
-        self::assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(1, $paginationData->pages);
 
         $paginationData = $this->repository->paginationOnlyTrashed(1, 3);
-        self::assertObjectHasAttribute('result', $paginationData);
         $this->assertCount(0, $paginationData->result);
-        self::assertObjectHasAttribute('total', $paginationData);
         $this->assertEquals(0, $paginationData->total);
-        self::assertObjectHasAttribute('page', $paginationData);
         $this->assertEquals(1, $paginationData->page);
-        self::assertObjectHasAttribute('pages', $paginationData);
         $this->assertEquals(0, $paginationData->pages);
-    }
-
-    public static function assertObjectHasAttribute(string $attributeName, $object, string $message = ''): void
-    {
-        self::assertIsObject($object);
-        self::assertTrue(property_exists($object, $attributeName));
     }
 }
