@@ -6,15 +6,17 @@ use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Eloquent\Crud\Exception\AccessDeniedException;
 
+/**
+ * @template TModel of Model
+ */
 interface CrudRepository
 {
     /**
      * Return the model to allow creating custom queries.
      *
-     * @return Model|SoftDeletes
+     * @return TModel
      */
     public function model(): Model;
 
@@ -23,7 +25,7 @@ interface CrudRepository
      *
      * @param array $with
      *
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     * @return \Illuminate\Database\Eloquent\Collection<int, TModel>
      */
     public function all(array $with = []) : Collection;
 
@@ -32,7 +34,7 @@ interface CrudRepository
      *
      * @param array $with
      *
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     * @return \Illuminate\Database\Eloquent\Collection<int, TModel>
      */
     public function allWithTrashed(array $with = []) : Collection;
 
@@ -41,7 +43,7 @@ interface CrudRepository
      *
      * @param array $with
      *
-     * @return Collection
+     * @return \Illuminate\Database\Eloquent\Collection<int, TModel>
      */
     public function allTrashed(array $with = []): Collection;
 
@@ -53,7 +55,7 @@ interface CrudRepository
      *
      * @throws AccessDeniedException
      *
-     * @return Model
+     * @return TModel
      */
     public function find(int $id, array $with = []) : Model;
 
@@ -65,7 +67,7 @@ interface CrudRepository
      *
      * @throws AccessDeniedException
      *
-     * @return Model
+     * @return TModel
      */
     public function findWithTrashed(int $id, array $with = []) : Model;
 
@@ -77,7 +79,7 @@ interface CrudRepository
      *
      * @throws AccessDeniedException
      *
-     * @return Model
+     * @return TModel
      */
     public function findTrashed(int $id, array $with = []) : Model;
 
@@ -92,7 +94,7 @@ interface CrudRepository
      *
      * @throws AccessDeniedException
      *
-     * @return Model|null|static
+     * @return TModel|null
      */
     public function findBy(string $field, $value, string $comparison = '=', bool $strict = true, array $with = []) : ?Model;
 
@@ -107,7 +109,7 @@ interface CrudRepository
      *
      * @throws AccessDeniedException
      *
-     * @return Model|null|static
+     * @return TModel|null
      */
     public function findByWithTrashed(string $field, $value, string $comparison = '=', bool $strict = true, array $with = []) : ?Model;
 
@@ -122,7 +124,7 @@ interface CrudRepository
      *
      * @throws AccessDeniedException
      *
-     * @return Model|null|static
+     * @return TModel|null
      */
     public function findByTrashed(string $field, $value, string $comparison = '=', bool $strict = true, array $with = []) : ?Model;
 
@@ -131,14 +133,14 @@ interface CrudRepository
      *
      * @param array $params
      *
-     * @return Model
+     * @return TModel
      */
     public function newModel(array $params = []): Model;
 
     /**
      * Formats the model to use in APIs.
      *
-     * @param Model $model
+     * @param TModel $model
      *
      * @return array
      */
@@ -151,7 +153,7 @@ interface CrudRepository
      *
      * @throws AccessDeniedException
      *
-     * @return Model
+     * @return TModel
      */
     public function create(array $params): Model;
 
@@ -163,7 +165,7 @@ interface CrudRepository
      *
      * @throws AccessDeniedException
      *
-     * @return Model
+     * @return TModel
      */
     public function update(int $id, array $params): Model;
 

@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
+use Illuminate\Database\Eloquent\Builder;
+use Eloquent\Crud\Exception\AccessDeniedException;
 use Eloquent\Crud\Repository\Eloquent\CrudRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\MassAssignmentException;
@@ -10,23 +12,23 @@ use Illuminate\Database\Eloquent\MassAssignmentException;
 final class EloquentCrudTest extends TestCase
 {
     /**
-     * @var \TestModel|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder
+     * @var TestModel|\Illuminate\Database\Query\Builder|Builder
      */
-    private $model;
+    private \Illuminate\Database\Query\Builder|TestModel|Builder $model;
 
     /**
-     * @var \TestModelWithSoftDelete|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder
+     * @var TestModelWithSoftDelete|\Illuminate\Database\Query\Builder|Builder
      */
-    private $modelWithSoftDelete;
+    private \Illuminate\Database\Query\Builder|TestModelWithSoftDelete|Builder $modelWithSoftDelete;
 
     /**
-     * @var \Eloquent\Crud\Repository\Eloquent\CrudRepository
+     * @var CrudRepository
      */
-    private $repository;
-    private $repositoryWithSoftDelete;
+    private CrudRepository $repository;
+    private CrudRepository $repositoryWithSoftDelete;
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     protected function setUp(): void
     {
@@ -61,7 +63,7 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testFindModel(): void
     {
@@ -83,7 +85,7 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testFindWithTrashedModel(): void
     {
@@ -100,7 +102,7 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testFindOnlyTrashedModel(): void
     {
@@ -119,11 +121,13 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testFindByModel(): void
     {
         $this->assertNotNull($this->repositoryWithSoftDelete->findBy('id', 1));
+        $this->assertNotNull($this->repositoryWithSoftDelete->findBy('id', 1, '=', false));
+        $this->assertNull($this->repositoryWithSoftDelete->findBy('id', 999, '=', false));
 
         try {
             $this->repositoryWithSoftDelete->findBy('id', 3);
@@ -132,6 +136,8 @@ final class EloquentCrudTest extends TestCase
         }
 
         $this->assertNotNull($this->repository->findBy('id', 1));
+        $this->assertNotNull($this->repository->findBy('id', 1, '=', false));
+        $this->assertNull($this->repository->findBy('id', 999, '=', false));
 
         try {
             $this->repository->findBy('id', 3);
@@ -141,14 +147,18 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testFindByWithTrashedModel(): void
     {
         $this->assertNotNull($this->repositoryWithSoftDelete->findByWithTrashed('id', 1));
         $this->assertNotNull($this->repositoryWithSoftDelete->findByWithTrashed('id', 3));
+        $this->assertNotNull($this->repositoryWithSoftDelete->findByWithTrashed('id', 3, '=', false));
+        $this->assertNull($this->repositoryWithSoftDelete->findByWithTrashed('id', 999, '=', false));
 
         $this->assertNotNull($this->repository->findByWithTrashed('id', 1));
+        $this->assertNotNull($this->repository->findByWithTrashed('id', 1, '=', false));
+        $this->assertNull($this->repository->findByWithTrashed('id', 999, '=', false));
 
         try {
             $this->repository->findByWithTrashed('id', 3);
@@ -158,7 +168,7 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testFindByOnlyTrashedModel(): void
     {
@@ -209,7 +219,7 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testFormatModel(): void
     {
@@ -223,7 +233,22 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
+     */
+    public function testFormatModelWithSelect(): void
+    {
+        $modelWithSelect = new class() extends TestModel {
+            public array $select = ['id' => true];
+        };
+        $repo = new CrudRepository($modelWithSelect);
+        $model = $this->repository->find(1);
+        $formatted = $repo->formatModel($model);
+        $this->assertArrayHasKey('id', $formatted);
+        $this->assertArrayNotHasKey('msg', $formatted);
+    }
+
+    /**
+     * @throws AccessDeniedException
      */
     public function testCreate(): void
     {
@@ -237,7 +262,7 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testCreateWithParams(): void
     {
@@ -251,7 +276,7 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testUpdate(): void
     {
@@ -267,7 +292,7 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     public function testUpdateNotFound(): void
     {
@@ -285,8 +310,8 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
-     * @throws \Exception
+     * @throws AccessDeniedException
+     * @throws Exception
      */
     public function testDelete(): void
     {
@@ -298,8 +323,8 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
-     * @throws \Exception
+     * @throws AccessDeniedException
+     * @throws Exception
      */
     public function testDeleteNotFound(): void
     {
@@ -317,8 +342,8 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
-     * @throws \Exception
+     * @throws AccessDeniedException
+     * @throws Exception
      */
     public function testForceDelete(): void
     {
@@ -342,8 +367,8 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
-     * @throws \Exception
+     * @throws AccessDeniedException
+     * @throws Exception
      */
     public function testForceDeleteNotFound(): void
     {
@@ -361,8 +386,8 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
-     * @throws \Exception
+     * @throws AccessDeniedException
+     * @throws Exception
      */
     public function testRestore(): void
     {
@@ -373,8 +398,8 @@ final class EloquentCrudTest extends TestCase
     }
 
     /**
-     * @throws \Eloquent\Crud\Exception\AccessDeniedException
-     * @throws \Exception
+     * @throws AccessDeniedException
+     * @throws Exception
      */
     public function testRestoreNotFound(): void
     {
@@ -460,5 +485,101 @@ final class EloquentCrudTest extends TestCase
         $this->assertEquals(0, $paginationData->total);
         $this->assertEquals(1, $paginationData->page);
         $this->assertEquals(0, $paginationData->pages);
+    }
+
+    public function testAccessDeniedException(): void
+    {
+        $exception = new AccessDeniedException('Denied', 403);
+        $this->assertInstanceOf(AccessDeniedException::class, $exception);
+        $this->assertEquals('Denied', $exception->getMessage());
+        $this->assertIsArray($exception->getArguments());
+        $this->assertCount(2, $exception->getArguments());
+        $this->assertEquals(2, $exception->countArguments());
+
+        $exceptionWithArgs = new AccessDeniedException(args: ['param1', 'param2']);
+        $this->assertCount(3, $exceptionWithArgs->getArguments()); // param1, param2, null (model)
+        $this->assertEquals(3, $exceptionWithArgs->countArguments());
+    }
+
+    /**
+     * @throws AccessDeniedException
+     */
+    public function testCheckCanShowDenied(): void
+    {
+        $restrictedRepo = new class($this->model) extends CrudRepository {
+            protected function canShow(?\Illuminate\Database\Eloquent\Model $model): bool
+            {
+                return false;
+            }
+        };
+
+        $this->expectException(AccessDeniedException::class);
+        $restrictedRepo->find(1);
+    }
+
+    /**
+     * @throws AccessDeniedException
+     */
+    public function testCheckCanCreateDenied(): void
+    {
+        $restrictedRepo = new class($this->model) extends CrudRepository {
+            protected function canCreate(array $params): bool
+            {
+                return false;
+            }
+        };
+
+        $this->expectException(AccessDeniedException::class);
+        $restrictedRepo->create([]);
+    }
+
+    /**
+     * @throws AccessDeniedException
+     */
+    public function testCheckCanUpdateDenied(): void
+    {
+        $restrictedRepo = new class($this->model) extends CrudRepository {
+            protected function canUpdate(\Illuminate\Database\Eloquent\Model $model, array $newValues): bool
+            {
+                return false;
+            }
+        };
+
+        $this->expectException(AccessDeniedException::class);
+        $restrictedRepo->update(1, ['msg' => 'denied']);
+    }
+
+    /**
+     * @throws AccessDeniedException
+     * @throws Exception
+     */
+    public function testCheckCanDeleteDenied(): void
+    {
+        $restrictedRepo = new class($this->model) extends CrudRepository {
+            protected function canDelete(\Illuminate\Database\Eloquent\Model $model): bool
+            {
+                return false;
+            }
+        };
+
+        $this->expectException(AccessDeniedException::class);
+        $restrictedRepo->delete(1);
+    }
+
+    /**
+     * @throws AccessDeniedException
+     * @throws Exception
+     */
+    public function testCheckCanRestoreDenied(): void
+    {
+        $restrictedRepo = new class($this->modelWithSoftDelete) extends CrudRepository {
+            protected function canRestore(\Illuminate\Database\Eloquent\Model $model): bool
+            {
+                return false;
+            }
+        };
+
+        $this->expectException(AccessDeniedException::class);
+        $restrictedRepo->restore(3);
     }
 }
